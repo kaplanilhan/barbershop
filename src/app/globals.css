@@ -1,0 +1,667 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --color-barbershop-gold: #D4A574;
+  --color-copper: #B87333;
+  --color-deep-black: #0A0A0A;
+  --color-anthracite: #2C2C2C;
+  --color-warm-gray: #6B6B6B;
+  --color-light-gray: #E5E5E5;
+  --color-cream-white: #FAF9F6;
+  --color-pure-white: #FFFFFF;
+  --shadow-subtle: 0 2px 8px rgba(0, 0, 0, 0.06);
+  --shadow-medium: 0 8px 25px rgba(0, 0, 0, 0.12);
+  --shadow-large: 0 20px 40px rgba(0, 0, 0, 0.15);
+  --shadow-xl: 0 25px 50px rgba(0, 0, 0, 0.25);
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  line-height: 1.6;
+  color: var(--color-anthracite);
+  background-color: var(--color-pure-white);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Enhanced Typography - Mobile First */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Playfair Display', serif;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+/* Mobile-first Typography */
+h1 { font-size: 2rem; }
+h2 { font-size: 1.75rem; }
+h3 { font-size: 1.5rem; }
+h4 { font-size: 1.25rem; }
+h5 { font-size: 1.125rem; }
+h6 { font-size: 1rem; }
+
+@media (min-width: 640px) {
+  h1 { font-size: 2.5rem; }
+  h2 { font-size: 2rem; }
+  h3 { font-size: 1.75rem; }
+  h4 { font-size: 1.5rem; }
+}
+
+@media (min-width: 768px) {
+  h1 { font-size: 3rem; }
+  h2 { font-size: 2.5rem; }
+  h3 { font-size: 2rem; }
+  h4 { font-size: 1.75rem; }
+}
+
+@media (min-width: 1024px) {
+  h1 { font-size: 4rem; }
+  h2 { font-size: 3rem; }
+  h3 { font-size: 2.25rem; }
+  h4 { font-size: 2rem; }
+}
+
+p {
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--color-warm-gray);
+}
+
+@media (min-width: 640px) {
+  p {
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+}
+
+@media (min-width: 768px) {
+  p {
+    font-size: 1.125rem;
+    line-height: 1.7;
+  }
+}
+
+/* Professional Button System - Mobile First */
+.btn {
+  @apply inline-flex items-center justify-center px-6 py-3 text-sm font-semibold rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 focus:outline-none focus:ring-4 focus:ring-opacity-50;
+  letter-spacing: 0.5px;
+  text-decoration: none;
+  border: 2px solid transparent;
+}
+
+@media (min-width: 640px) {
+  .btn {
+    @apply px-8 py-4 text-base;
+  }
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--color-barbershop-gold) 0%, var(--color-copper) 100%);
+  color: var(--color-pure-white);
+  box-shadow: var(--shadow-medium);
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, var(--color-copper) 0%, var(--color-barbershop-gold) 100%);
+  box-shadow: var(--shadow-large);
+  transform: translateY(-2px);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--color-barbershop-gold);
+  border-color: var(--color-barbershop-gold);
+  backdrop-filter: blur(10px);
+}
+
+.btn-secondary:hover {
+  background: var(--color-barbershop-gold);
+  color: var(--color-pure-white);
+  transform: translateY(-2px);
+}
+
+/* Enhanced Card System - Mobile First */
+.card {
+  @apply bg-white rounded-xl overflow-hidden;
+  box-shadow: var(--shadow-subtle);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  border: 1px solid rgba(212, 165, 116, 0.1);
+}
+
+@media (min-width: 640px) {
+  .card {
+    @apply rounded-2xl;
+  }
+}
+
+.card:hover {
+  box-shadow: var(--shadow-large);
+  transform: translateY(-4px);
+  border-color: rgba(212, 165, 116, 0.2);
+}
+
+@media (min-width: 768px) {
+  .card:hover {
+    transform: translateY(-8px);
+  }
+}
+
+.hover-lift {
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.hover-lift:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-large);
+}
+
+@media (min-width: 768px) {
+  .hover-lift:hover {
+    transform: translateY(-12px);
+    box-shadow: var(--shadow-xl);
+  }
+}
+
+/* Professional Navigation - Mobile First */
+.nav-link {
+  @apply text-pure-white font-medium text-base relative py-2 px-3 rounded-lg transition-all duration-300;
+  position: relative;
+  overflow: hidden;
+}
+
+@media (min-width: 768px) {
+  .nav-link {
+    @apply text-lg px-4;
+  }
+}
+
+.nav-link::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: var(--color-barbershop-gold);
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
+}
+
+.nav-link:hover::before {
+  width: 80%;
+}
+
+.nav-link:hover {
+  color: var(--color-barbershop-gold);
+  background: rgba(212, 165, 116, 0.1);
+}
+
+/* Enhanced Sections - Mobile First */
+.section {
+  @apply py-12 px-4;
+}
+
+@media (min-width: 640px) {
+  .section {
+    @apply py-16;
+  }
+}
+
+@media (min-width: 768px) {
+  .section {
+    @apply py-20;
+  }
+}
+
+@media (min-width: 1024px) {
+  .section {
+    @apply py-24;
+  }
+}
+
+.section-title {
+  @apply text-2xl font-serif font-bold text-center mb-8;
+  background: linear-gradient(135deg, var(--color-anthracite) 0%, var(--color-barbershop-gold) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -0.02em;
+}
+
+@media (min-width: 640px) {
+  .section-title {
+    @apply text-3xl mb-10;
+  }
+}
+
+@media (min-width: 768px) {
+  .section-title {
+    @apply text-4xl mb-12;
+  }
+}
+
+@media (min-width: 1024px) {
+  .section-title {
+    @apply text-5xl mb-16;
+  }
+}
+
+/* Mobile-First Container System */
+.container {
+  @apply w-full mx-auto px-4;
+  max-width: 100%;
+}
+
+@media (min-width: 640px) {
+  .container {
+    @apply px-6;
+    max-width: 640px;
+  }
+}
+
+@media (min-width: 768px) {
+  .container {
+    max-width: 768px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container {
+    @apply px-8;
+    max-width: 1024px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .container {
+    max-width: 1280px;
+  }
+}
+
+@media (min-width: 1536px) {
+  .container {
+    max-width: 1400px;
+  }
+}
+
+/* Professional Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (min-width: 768px) {
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(60px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@media (min-width: 768px) {
+  @keyframes slideInRight {
+    from {
+      opacity: 0;
+      transform: translateX(60px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@media (min-width: 768px) {
+  @keyframes scaleIn {
+    from {
+      opacity: 0;
+      transform: scale(0.9);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+@media (min-width: 768px) {
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+}
+
+.animate-fadeInUp {
+  animation: fadeInUp 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+.animate-slideInRight {
+  animation: slideInRight 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+.animate-scaleIn {
+  animation: scaleIn 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Animation Delays */
+.animation-delay-200 { animation-delay: 0.2s; }
+.animation-delay-400 { animation-delay: 0.4s; }
+.animation-delay-600 { animation-delay: 0.6s; }
+
+/* Enhanced Color Classes */
+.text-barbershop-gold { color: var(--color-barbershop-gold); }
+.text-copper { color: var(--color-copper); }
+.text-deep-black { color: var(--color-deep-black); }
+.text-anthracite { color: var(--color-anthracite); }
+.text-warm-gray { color: var(--color-warm-gray); }
+.text-light-gray { color: var(--color-light-gray); }
+.text-cream-white { color: var(--color-cream-white); }
+.text-pure-white { color: var(--color-pure-white); }
+
+.bg-barbershop-gold { background-color: var(--color-barbershop-gold); }
+.bg-copper { background-color: var(--color-copper); }
+.bg-deep-black { background-color: var(--color-deep-black); }
+.bg-anthracite { background-color: var(--color-anthracite); }
+.bg-warm-gray { background-color: var(--color-warm-gray); }
+.bg-light-gray { background-color: var(--color-light-gray); }
+.bg-cream-white { background-color: var(--color-cream-white); }
+.bg-pure-white { background-color: var(--color-pure-white); }
+
+/* Professional Gradients */
+.gradient-gold {
+  background: linear-gradient(135deg, var(--color-barbershop-gold) 0%, var(--color-copper) 100%);
+}
+
+.gradient-dark {
+  background: linear-gradient(135deg, var(--color-deep-black) 0%, var(--color-anthracite) 100%);
+}
+
+/* Enhanced Focus States */
+*:focus {
+  outline: 2px solid var(--color-barbershop-gold);
+  outline-offset: 2px;
+}
+
+/* Professional Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+@media (min-width: 768px) {
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-light-gray);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-barbershop-gold);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-copper);
+}
+
+/* Professional Loading States */
+.loading {
+  opacity: 0.6;
+  pointer-events: none;
+  position: relative;
+}
+
+.loading::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 16px;
+  height: 16px;
+  margin: -8px 0 0 -8px;
+  border: 2px solid var(--color-barbershop-gold);
+  border-radius: 50%;
+  border-top-color: transparent;
+  animation: spin 1s linear infinite;
+}
+
+@media (min-width: 768px) {
+  .loading::after {
+    width: 20px;
+    height: 20px;
+    margin: -10px 0 0 -10px;
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Professional Form Styles */
+.form-group {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+.label {
+  display: block;
+  font-weight: 600;
+  color: var(--color-anthracite);
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+  letter-spacing: 0.025em;
+  text-transform: uppercase;
+}
+
+@media (min-width: 640px) {
+  .label {
+    font-size: 0.9rem;
+  }
+}
+
+.input {
+  width: 100%;
+  padding: 1rem 1.25rem;
+  background: var(--color-cream-white);
+  border: 2px solid transparent;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  color: var(--color-anthracite);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  outline: none;
+  font-family: 'Inter', sans-serif;
+}
+
+@media (min-width: 640px) {
+  .input {
+    padding: 1.125rem 1.5rem;
+    font-size: 1rem;
+    border-radius: 16px;
+  }
+}
+
+.input:focus {
+  background: var(--color-pure-white);
+  border-color: var(--color-barbershop-gold);
+  box-shadow: 0 0 0 3px rgba(212, 165, 116, 0.1), 0 4px 12px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+}
+
+.input::placeholder {
+  color: var(--color-warm-gray);
+  opacity: 0.7;
+}
+
+.input:hover {
+  background: var(--color-pure-white);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+
+.textarea {
+  resize: vertical;
+  min-height: 120px;
+  font-family: 'Inter', sans-serif;
+  line-height: 1.5;
+}
+
+@media (min-width: 640px) {
+  .textarea {
+    min-height: 140px;
+  }
+}
+
+/* Professional Contact Form */
+.contact-form {
+  background: linear-gradient(135deg, var(--color-pure-white) 0%, var(--color-cream-white) 100%);
+  border-radius: 24px;
+  padding: 2rem;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(212, 165, 116, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+@media (min-width: 640px) {
+  .contact-form {
+    padding: 2.5rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .contact-form {
+    padding: 3rem;
+  }
+}
+
+.contact-form::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--color-barbershop-gold) 0%, var(--color-copper) 100%);
+}
+
+.contact-form h2 {
+  color: var(--color-anthracite);
+  margin-bottom: 0.5rem;
+  position: relative;
+}
+
+.contact-form .subtitle {
+  color: var(--color-warm-gray);
+  margin-bottom: 2rem;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+@media (min-width: 640px) {
+  .contact-form .subtitle {
+    font-size: 1rem;
+  }
+}
+
+.form-submit-btn {
+  width: 100%;
+  background: linear-gradient(135deg, var(--color-barbershop-gold) 0%, var(--color-copper) 100%);
+  color: var(--color-pure-white);
+  border: none;
+  padding: 1.125rem 2rem;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 15px rgba(212, 165, 116, 0.4);
+  position: relative;
+  overflow: hidden;
+}
+
+@media (min-width: 640px) {
+  .form-submit-btn {
+    padding: 1.25rem 2.5rem;
+    font-size: 1rem;
+    border-radius: 16px;
+  }
+}
+
+.form-submit-btn:hover {
+  background: linear-gradient(135deg, var(--color-copper) 0%, var(--color-barbershop-gold) 100%);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(212, 165, 116, 0.5);
+}
+
+.form-submit-btn:active {
+  transform: translateY(-1px);
+} 
