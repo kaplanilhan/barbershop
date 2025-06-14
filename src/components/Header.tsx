@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { Menu, X } from 'lucide-react'
 import { usePathname } from 'next/navigation'
+import { siteConfig, navigationLinks } from '@/config/site'
 
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
@@ -19,8 +20,31 @@ export default function Header() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
+  // Body scroll lock when mobile menu is open
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      // Prevent scrolling
+      document.body.style.overflow = 'hidden'
+      document.body.style.paddingRight = '0px' // Prevent layout shift
+    } else {
+      // Restore scrolling
+      document.body.style.overflow = 'unset'
+      document.body.style.paddingRight = '0px'
+    }
+
+    // Cleanup on unmount
+    return () => {
+      document.body.style.overflow = 'unset'
+      document.body.style.paddingRight = '0px'
+    }
+  }, [isMobileMenuOpen])
+
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen)
+  }
+
+  const closeMobileMenu = () => {
+    setIsMobileMenuOpen(false)
   }
 
   return (
@@ -38,68 +62,41 @@ export default function Header() {
               : 'text-barbershop-gold hover:text-copper'
           }`}
         >
-          <span className="hidden sm:inline">Classman The Barber Club</span>
+          <span className="hidden sm:inline">{siteConfig.name}</span>
           <span className="sm:hidden">Classman</span>
         </Link>
         
         <ul className="hidden md:flex items-center gap-6 lg:gap-8">
-          <li>
-            <Link 
-              href="/" 
-              className={`nav-link ${
-                isScrolled ? 'text-pure-white' : 'text-anthracite'
-              } ${pathname === '/' ? 'border-b-2 border-barbershop-gold' : ''}`}
-            >
-              Home
-            </Link>
-          </li>
-          <li>
-            <Link 
-              href="/services" 
-              className={`nav-link ${
-                isScrolled ? 'text-pure-white' : 'text-anthracite'
-              } ${pathname === '/services' ? 'border-b-2 border-barbershop-gold' : ''}`}
-            >
-              Services
-            </Link>
-          </li>
-          <li>
-            <Link 
-              href="/team" 
-              className={`nav-link ${
-                isScrolled ? 'text-pure-white' : 'text-anthracite'
-              } ${pathname === '/team' ? 'border-b-2 border-barbershop-gold' : ''}`}
-            >
-              Team
-            </Link>
-          </li>
-          <li>
-            <Link 
-              href="/contact" 
-              className={`nav-link ${
-                isScrolled ? 'text-pure-white' : 'text-anthracite'
-              } ${pathname === '/contact' ? 'border-b-2 border-barbershop-gold' : ''}`}
-            >
-              Kontakt
-            </Link>
-          </li>
+          {navigationLinks.map((link) => (
+            <li key={link.href}>
+              <Link 
+                href={link.href} 
+                className={`nav-link ${
+                  isScrolled ? 'text-pure-white' : 'text-anthracite'
+                } ${pathname === link.href ? 'border-b-2 border-barbershop-gold' : ''}`}
+              >
+                {link.label}
+              </Link>
+            </li>
+          ))}
         </ul>
 
         <a 
-          href="tel:+436609353277" 
+          href={`tel:${siteConfig.contact.phone}`} 
           className="btn btn-primary hidden md:inline-flex"
+          aria-label={`Anrufen: ${siteConfig.contact.phoneDisplay}`}
         >
           Jetzt anrufen
         </a>
 
         <button 
-          className={`md:hidden transition-colors ${
+          className={`md:hidden transition-colors z-[70] relative ${
             isScrolled 
               ? 'text-pure-white hover:text-barbershop-gold' 
               : 'text-anthracite hover:text-barbershop-gold'
           }`}
           onClick={toggleMobileMenu}
-          aria-label="Menü öffnen/schließen"
+          aria-label={isMobileMenuOpen ? "Menü schließen" : "Menü öffnen"}
         >
           {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
@@ -109,62 +106,54 @@ export default function Header() {
       <div 
         className={`fixed top-0 right-0 w-full max-w-[300px] sm:max-w-[320px] h-screen bg-deep-black transition-transform duration-300 transform ${
           isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
-        } md:hidden pt-16 sm:pt-20 px-6 z-[60]`}
+        } md:hidden pt-16 sm:pt-20 px-6 z-[60] shadow-2xl`}
       >
         <ul className="space-y-4 sm:space-y-6">
-          <li>
-            <Link 
-              href="/" 
-              className={`nav-link text-base sm:text-lg text-pure-white ${pathname === '/' ? 'border-b-2 border-barbershop-gold' : ''}`}
-              onClick={toggleMobileMenu}
-            >
-              Home
-            </Link>
-          </li>
-          <li>
-            <Link 
-              href="/services" 
-              className={`nav-link text-base sm:text-lg text-pure-white ${pathname === '/services' ? 'border-b-2 border-barbershop-gold' : ''}`}
-              onClick={toggleMobileMenu}
-            >
-              Services
-            </Link>
-          </li>
-          <li>
-            <Link 
-              href="/team" 
-              className={`nav-link text-base sm:text-lg text-pure-white ${pathname === '/team' ? 'border-b-2 border-barbershop-gold' : ''}`}
-              onClick={toggleMobileMenu}
-            >
-              Team
-            </Link>
-          </li>
-          <li>
-            <Link 
-              href="/contact" 
-              className={`nav-link text-base sm:text-lg text-pure-white ${pathname === '/contact' ? 'border-b-2 border-barbershop-gold' : ''}`}
-              onClick={toggleMobileMenu}
-            >
-              Kontakt
-            </Link>
-          </li>
+          {navigationLinks.map((link) => (
+            <li key={link.href}>
+              <Link 
+                href={link.href} 
+                className={`nav-link text-base sm:text-lg text-pure-white block py-2 border-b border-transparent hover:border-barbershop-gold transition-colors ${
+                  pathname === link.href ? 'border-b-2 border-barbershop-gold text-barbershop-gold' : ''
+                }`}
+                onClick={closeMobileMenu}
+              >
+                {link.label}
+              </Link>
+            </li>
+          ))}
           <li className="pt-4">
             <a 
-              href="tel:+436609353277" 
-              className="btn btn-primary w-full text-center"
-              onClick={toggleMobileMenu}
+              href={`tel:${siteConfig.contact.phone}`} 
+              className="btn btn-primary w-full text-center block"
+              onClick={closeMobileMenu}
+              aria-label={`Anrufen: ${siteConfig.contact.phoneDisplay}`}
             >
               Jetzt anrufen
+            </a>
+          </li>
+          <li className="pt-2">
+            <a 
+              href={siteConfig.social.whatsapp} 
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-secondary w-full text-center block"
+              onClick={closeMobileMenu}
+              aria-label="WhatsApp schreiben"
+            >
+              WhatsApp schreiben
             </a>
           </li>
         </ul>
       </div>
 
-      {/* Overlay */}
+      {/* Improved Overlay with better touch handling */}
       {isMobileMenuOpen && (
         <div 
-          className="fixed inset-0 bg-black bg-opacity-50 md:hidden z-40"
-          onClick={toggleMobileMenu}
+          className="fixed inset-0 bg-black bg-opacity-60 md:hidden z-40 backdrop-blur-sm"
+          onClick={closeMobileMenu}
+          onTouchStart={closeMobileMenu}
+          aria-label="Menü schließen"
         />
       )}
     </header>

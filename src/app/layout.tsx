@@ -1,44 +1,66 @@
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+import { Inter, Playfair_Display } from 'next/font/google'
 import './globals.css'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import CookieBanner from '@/components/CookieBanner'
-import { StagewiseToolbar } from '@stagewise/toolbar-next'
+import { siteConfig } from '@/config/site'
 
-const inter = Inter({ subsets: ['latin'] })
-
-const stagewiseConfig = {
-  plugins: []
-}
+const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
+const playfair = Playfair_Display({ subsets: ['latin'], variable: '--font-playfair' })
 
 export const metadata: Metadata = {
-  title: 'Classman The Barber Club - Ihr Barbershop in Wiener Neustadt',
-  description: 'Professionelle Haarschnitte und Bartpflege in Wiener Neustadt. Traditionelle Barbershop-Erfahrung mit modernem Stil.',
-  keywords: 'Barbershop Wiener Neustadt, Herrenfrisuren, Bartpflege, Classman The Barber Club, Friseur Wiener Neustadt, Herrensalon',
+  title: `${siteConfig.name} - ${siteConfig.tagline}`,
+  description: siteConfig.description,
+  keywords: siteConfig.seo.keywords.join(', '),
+  authors: [{ name: siteConfig.name }],
+  creator: siteConfig.name,
+  publisher: siteConfig.name,
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+  metadataBase: new URL(siteConfig.url),
+  alternates: {
+    canonical: '/',
+  },
   openGraph: {
-    title: 'Classman The Barber Club - Traditionelle Herrenfrisuren in Wiener Neustadt',
-    description: 'Professionelle Haarschnitte und Bartpflege in Wiener Neustadt. Traditionelle Barbershop-Erfahrung mit modernem Stil.',
-    siteName: 'Classman The Barber Club',
+    title: `${siteConfig.name} - ${siteConfig.tagline}`,
+    description: siteConfig.description,
+    url: siteConfig.url,
+    siteName: siteConfig.name,
+    images: [
+      {
+        url: siteConfig.ogImage,
+        width: 1200,
+        height: 630,
+        alt: `${siteConfig.name} - Premium Barbershop in Wiener Neustadt`,
+      },
+    ],
     locale: 'de_AT',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Classman The Barber Club - Traditionelle Herrenfrisuren in Wiener Neustadt',
-    description: 'Professionelle Haarschnitte und Bartpflege in Wiener Neustadt. Traditionelle Barbershop-Erfahrung mit modernem Stil.',
+    title: `${siteConfig.name} - ${siteConfig.tagline}`,
+    description: siteConfig.description,
+    images: [siteConfig.ogImage],
   },
   robots: {
     index: true,
     follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
   },
   verification: {
-    google: 'your-google-site-verification',
+    // google: 'google-site-verification-code',
   },
-  alternates: {
-    canonical: 'https://classman.at',
-  },
-  metadataBase: new URL('https://classman.at'),
 }
 
 export default function RootLayout({
@@ -47,37 +69,34 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="de">
+    <html lang="de" className={`${inter.variable} ${playfair.variable}`}>
       <head>
-        <link rel="canonical" href="https://classiccuts.de" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
-        <meta name="theme-color" content="#D4AF37" />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        {/* Local Business Schema */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
-              "@type": "BarberShop",
-              "name": "Classic Cuts Barbershop",
-              "image": "https://classiccuts.de/images/barbershop.jpg",
-              "description": "Professioneller Barbershop in Berlin. Traditionelle Herrenfrisuren, Bartpflege und mehr.",
+              "@type": "HairSalon",
+              "name": siteConfig.name,
+              "image": siteConfig.ogImage,
+              "description": siteConfig.description,
+              "url": siteConfig.url,
+              "telephone": siteConfig.contact.phone,
+              "email": siteConfig.contact.email,
               "address": {
                 "@type": "PostalAddress",
-                "streetAddress": "Musterstraße 123",
-                "addressLocality": "Berlin",
-                "postalCode": "12345",
-                "addressCountry": "DE"
+                "streetAddress": siteConfig.contact.address.street,
+                "addressLocality": "Wiener Neustadt",
+                "addressRegion": "Niederösterreich",
+                "postalCode": "2700",
+                "addressCountry": "AT"
               },
               "geo": {
                 "@type": "GeoCoordinates",
-                "latitude": "52.520008",
-                "longitude": "13.404954"
+                "latitude": siteConfig.contact.coordinates.lat,
+                "longitude": siteConfig.contact.coordinates.lng
               },
-              "url": "https://classiccuts.de",
-              "telephone": "+4912345678900",
-              "priceRange": "€€",
               "openingHoursSpecification": [
                 {
                   "@type": "OpeningHoursSpecification",
@@ -88,24 +107,58 @@ export default function RootLayout({
                 {
                   "@type": "OpeningHoursSpecification",
                   "dayOfWeek": "Saturday",
-                  "opens": "09:00",
-                  "closes": "16:00"
+                  "opens": "08:00",
+                  "closes": "17:00"
                 }
               ],
               "sameAs": [
-                "https://www.facebook.com/classiccuts",
-                "https://www.instagram.com/classiccuts"
+                siteConfig.social.facebook,
+                siteConfig.social.instagram
+              ],
+              "priceRange": "€€",
+              "currenciesAccepted": "EUR",
+              "paymentAccepted": "Cash, Card",
+              "foundingDate": siteConfig.established,
+              "areaServed": {
+                "@type": "City",
+                "name": "Wiener Neustadt"
+              },
+              "serviceType": "Hair Salon",
+              "makesOffer": [
+                {
+                  "@type": "Offer",
+                  "itemOffered": {
+                    "@type": "Service",
+                    "name": "Herrenhaarschnitt",
+                    "description": "Klassischer und moderner Herrenhaarschnitt"
+                  }
+                },
+                {
+                  "@type": "Offer", 
+                  "itemOffered": {
+                    "@type": "Service",
+                    "name": "Traditionelle Rasur",
+                    "description": "Klassische Rasur mit Rasiermesser und heißen Tüchern"
+                  }
+                },
+                {
+                  "@type": "Offer",
+                  "itemOffered": {
+                    "@type": "Service", 
+                    "name": "Bartpflege",
+                    "description": "Professionelle Bartpflege und Styling"
+                  }
+                }
               ]
             })
           }}
         />
       </head>
-      <body className={inter.className}>
+      <body className="font-inter antialiased">
         <Header />
         <main>{children}</main>
         <Footer />
         <CookieBanner />
-        {process.env.NODE_ENV === 'development' && <StagewiseToolbar config={stagewiseConfig} />}
       </body>
     </html>
   )

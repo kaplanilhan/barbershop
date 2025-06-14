@@ -2,6 +2,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { FaFacebook, FaInstagram, FaWhatsapp } from 'react-icons/fa'
 import { Star, Users, Award, Clock, ChevronRight, Quote, Phone, MessageCircle } from 'lucide-react'
+import { siteConfig } from '@/config/site'
 
 export default function Home() {
   return (
@@ -26,19 +27,18 @@ export default function Home() {
             <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-serif font-bold mb-6 sm:mb-8 animate-fadeInUp">
               Willkommen bei 
               <span className="block text-barbershop-gold mt-2 sm:mt-4 animate-float">
-                Classman The Barber Club
+                {siteConfig.name}
               </span>
             </h1>
             <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-200 mb-8 sm:mb-12 max-w-4xl mx-auto leading-relaxed font-light drop-shadow-xl animate-fadeInUp animation-delay-400">
-              Seit 2025 steht Classman The Barber Club für erstklassige Barbershop-Tradition kombiniert mit
-              modernem Stil in Wiener Neustadt. Erleben Sie Handwerkskunst auf höchstem Niveau.
+              {siteConfig.description}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center animate-fadeInUp animation-delay-600">
-              <a href="tel:+436609353277" className="btn btn-primary text-base sm:text-lg px-8 sm:px-10 py-4 sm:py-5 group">
+              <a href={`tel:${siteConfig.contact.phone}`} className="btn btn-primary text-base sm:text-lg px-8 sm:px-10 py-4 sm:py-5 group" aria-label={`Anrufen: ${siteConfig.contact.phoneDisplay}`}>
                 <Phone className="w-5 h-5 sm:w-6 sm:h-6 mr-2 sm:mr-3 group-hover:animate-pulse" />
                 Jetzt anrufen
               </a>
-              <a href="https://wa.me/436609353277" target="_blank" rel="noopener noreferrer" className="btn btn-secondary text-base sm:text-lg px-8 sm:px-10 py-4 sm:py-5 group">
+              <a href={siteConfig.social.whatsapp} target="_blank" rel="noopener noreferrer" className="btn btn-secondary text-base sm:text-lg px-8 sm:px-10 py-4 sm:py-5 group" aria-label="WhatsApp schreiben">
                 <MessageCircle className="w-5 h-5 sm:w-6 sm:h-6 mr-2 sm:mr-3 group-hover:animate-pulse" />
                 WhatsApp schreiben
               </a>
@@ -46,13 +46,13 @@ export default function Home() {
             
             <div className="mt-12 sm:mt-16 animate-fadeInUp animation-delay-800">
               <div className="flex justify-center gap-6 sm:gap-8">
-                <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center hover:bg-barbershop-gold hover:scale-110 transition-all duration-300">
+                <a href={siteConfig.social.facebook} target="_blank" rel="noopener noreferrer" className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center hover:bg-barbershop-gold hover:scale-110 transition-all duration-300" aria-label="Facebook besuchen">
                   <FaFacebook size={18} className="sm:w-5 sm:h-5" />
                 </a>
-                <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center hover:bg-barbershop-gold hover:scale-110 transition-all duration-300">
+                <a href={siteConfig.social.instagram} target="_blank" rel="noopener noreferrer" className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center hover:bg-barbershop-gold hover:scale-110 transition-all duration-300" aria-label="Instagram besuchen">
                   <FaInstagram size={18} className="sm:w-5 sm:h-5" />
                 </a>
-                <a href="https://wa.me/436609353277" target="_blank" rel="noopener noreferrer" className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center hover:bg-barbershop-gold hover:scale-110 transition-all duration-300">
+                <a href={siteConfig.social.whatsapp} target="_blank" rel="noopener noreferrer" className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center hover:bg-barbershop-gold hover:scale-110 transition-all duration-300" aria-label="WhatsApp schreiben">
                   <FaWhatsapp size={18} className="sm:w-5 sm:h-5" />
                 </a>
               </div>
@@ -67,25 +67,21 @@ export default function Home() {
           <div className="grid gap-8 sm:gap-10 md:gap-12 lg:grid-cols-2 items-center">
             <div className="animate-slideInRight order-2 lg:order-1">
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-semibold mb-4 sm:mb-6">
-                Willkommen bei <span className="text-barbershop-gold">Classman The Barber Club</span>
+                Willkommen bei <span className="text-barbershop-gold">{siteConfig.name}</span>
               </h2>
               <p className="text-warm-gray mb-4 sm:mb-6">
-                Seit 2025 steht Classman The Barber Club für erstklassige Barbershop-Tradition kombiniert mit 
-                modernem Style. In unserem stilvollen Ambiente erwartet Sie mehr als nur ein Haarschnitt – 
-                es ist eine Auszeit vom Alltag.
+                {siteConfig.description}
               </p>
               <p className="text-warm-gray mb-6 sm:mb-8">
-                Unsere erfahrenen Barber verstehen ihr Handwerk und nehmen sich Zeit für jeden einzelnen 
-                Kunden. Bei uns erhalten Sie nicht nur einen perfekten Schnitt, sondern auch eine 
-                professionelle Beratung und ein unvergessliches Erlebnis.
+                {siteConfig.longDescription}
               </p>
               <div className="grid grid-cols-2 gap-4 sm:gap-6 mb-6 sm:mb-8">
                 <div className="text-center">
-                  <div className="text-3xl sm:text-4xl font-bold text-barbershop-gold mb-2">2</div>
+                  <div className="text-3xl sm:text-4xl font-bold text-barbershop-gold mb-2">{siteConfig.team.totalBarbers}</div>
                   <p className="text-sm sm:text-base text-warm-gray">Erfahrene Barber</p>
                 </div>
                 <div className="text-center">
-                  <div className="text-3xl sm:text-4xl font-bold text-barbershop-gold mb-2">10+</div>
+                  <div className="text-3xl sm:text-4xl font-bold text-barbershop-gold mb-2">{siteConfig.team.experienceYears}</div>
                   <p className="text-sm sm:text-base text-warm-gray">Jahre Erfahrung</p>
                 </div>
               </div>
@@ -109,40 +105,28 @@ export default function Home() {
       {/* Features Section */}
       <section className="section bg-cream-white">
         <div className="container">
-          <h2 className="section-title">Warum Classman The Barber Club?</h2>
+          <h2 className="section-title">Warum {siteConfig.name}?</h2>
           
           <div className="grid gap-6 sm:gap-8 sm:grid-cols-2 lg:grid-cols-4">
-            <div className="text-center group">
-              <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto bg-barbershop-gold rounded-full flex items-center justify-center mb-3 sm:mb-4 group-hover:scale-110 transition-transform">
-                <Star className="w-8 h-8 sm:w-10 sm:h-10 text-pure-white" />
-              </div>
-              <h3 className="text-lg sm:text-xl font-semibold mb-2">Premium Qualität</h3>
-              <p className="text-sm sm:text-base text-warm-gray">Nur die besten Produkte und Werkzeuge für perfekte Ergebnisse</p>
-            </div>
-            
-            <div className="text-center group">
-              <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto bg-barbershop-gold rounded-full flex items-center justify-center mb-3 sm:mb-4 group-hover:scale-110 transition-transform">
-                <Users className="w-8 h-8 sm:w-10 sm:h-10 text-pure-white" />
-              </div>
-              <h3 className="text-lg sm:text-xl font-semibold mb-2">Erfahrene Barber</h3>
-              <p className="text-sm sm:text-base text-warm-gray">Ausgebildete Profis mit Leidenschaft für ihr Handwerk</p>
-            </div>
-            
-            <div className="text-center group">
-              <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto bg-barbershop-gold rounded-full flex items-center justify-center mb-3 sm:mb-4 group-hover:scale-110 transition-transform">
-                <Award className="w-8 h-8 sm:w-10 sm:h-10 text-pure-white" />
-              </div>
-              <h3 className="text-lg sm:text-xl font-semibold mb-2">Ausgezeichnet</h3>
-              <p className="text-sm sm:text-base text-warm-gray">Mehrfach prämiert für exzellenten Service und Qualität</p>
-            </div>
-            
-            <div className="text-center group">
-              <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto bg-barbershop-gold rounded-full flex items-center justify-center mb-3 sm:mb-4 group-hover:scale-110 transition-transform">
-                <Clock className="w-8 h-8 sm:w-10 sm:h-10 text-pure-white" />
-              </div>
-              <h3 className="text-lg sm:text-xl font-semibold mb-2">Flexible Termine</h3>
-              <p className="text-sm sm:text-base text-warm-gray">Rufen Sie uns an oder schreiben Sie uns - wir finden Ihren Wunschtermin</p>
-            </div>
+            {siteConfig.features.map((feature, index) => {
+              const iconMap = {
+                Star: Star,
+                Users: Users,
+                Award: Award,
+                Clock: Clock
+              }
+              const IconComponent = iconMap[feature.icon as keyof typeof iconMap] || Star
+              
+              return (
+                <div key={index} className="text-center group">
+                  <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto bg-barbershop-gold rounded-full flex items-center justify-center mb-3 sm:mb-4 group-hover:scale-110 transition-transform">
+                    <IconComponent className="w-8 h-8 sm:w-10 sm:h-10 text-pure-white" />
+                  </div>
+                  <h3 className="text-lg sm:text-xl font-semibold mb-2">{feature.title}</h3>
+                  <p className="text-sm sm:text-base text-warm-gray">{feature.description}</p>
+                </div>
+              )
+            })}
           </div>
         </div>
       </section>
@@ -305,10 +289,10 @@ export default function Home() {
             auf höchstem Niveau.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
-            <a href="tel:+436609353277" className="btn bg-pure-white text-barbershop-gold hover:bg-cream-white">
+            <a href={`tel:${siteConfig.contact.phone}`} className="btn bg-pure-white text-barbershop-gold hover:bg-cream-white" aria-label={`Anrufen: ${siteConfig.contact.phoneDisplay}`}>
               Jetzt anrufen
             </a>
-            <a href="https://wa.me/436609353277" target="_blank" rel="noopener noreferrer" className="btn bg-pure-white text-barbershop-gold hover:bg-cream-white">
+            <a href={siteConfig.social.whatsapp} target="_blank" rel="noopener noreferrer" className="btn bg-pure-white text-barbershop-gold hover:bg-cream-white" aria-label="WhatsApp schreiben">
               WhatsApp schreiben
             </a>
           </div>

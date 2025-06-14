@@ -1,137 +1,166 @@
 import Link from 'next/link'
-import { MapPin, Phone, Mail, Clock, Facebook, Instagram, MessageCircle } from 'lucide-react'
+import { FaFacebook, FaInstagram, FaWhatsapp } from 'react-icons/fa'
+import { Phone, Mail, MapPin, Clock } from 'lucide-react'
+import { siteConfig, navigationLinks } from '@/config/site'
 
 export default function Footer() {
+  const currentYear = new Date().getFullYear()
+
   return (
     <footer className="bg-deep-black text-pure-white">
-      <div className="container py-12 sm:py-16">
-        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4 mb-8 sm:mb-12">
-          {/* Logo & Beschreibung */}
-          <div className="sm:col-span-2 lg:col-span-1">
-            <Link href="/" className="text-xl sm:text-2xl font-serif font-bold text-barbershop-gold">
-              Classman The Barber Club
-            </Link>
-            <p className="mt-3 sm:mt-4 text-sm sm:text-base text-gray-400">
-              Premium Barbershop für den modernen Gentleman. Tradition trifft auf modernen Style.
+      <div className="container py-8 sm:py-12">
+        <div className="grid gap-6 sm:gap-8 md:grid-cols-2 lg:grid-cols-4">
+          {/* Company Info */}
+          <div className="lg:col-span-2">
+            <h3 className="font-serif text-xl sm:text-2xl font-semibold text-barbershop-gold mb-4">
+              {siteConfig.name}
+            </h3>
+            <p className="text-gray-300 mb-4 sm:mb-6 max-w-md">
+              {siteConfig.longDescription}
             </p>
+            <div className="flex gap-4">
+              <a 
+                href={siteConfig.social.facebook} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="w-10 h-10 rounded-full bg-barbershop-gold flex items-center justify-center hover:bg-copper transition-colors"
+                aria-label="Facebook besuchen"
+              >
+                <FaFacebook size={18} />
+              </a>
+              <a 
+                href={siteConfig.social.instagram} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="w-10 h-10 rounded-full bg-barbershop-gold flex items-center justify-center hover:bg-copper transition-colors"
+                aria-label="Instagram besuchen"
+              >
+                <FaInstagram size={18} />
+              </a>
+              <a 
+                href={siteConfig.social.whatsapp} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="w-10 h-10 rounded-full bg-barbershop-gold flex items-center justify-center hover:bg-copper transition-colors"
+                aria-label="WhatsApp schreiben"
+              >
+                <FaWhatsapp size={18} />
+              </a>
+            </div>
           </div>
 
           {/* Quick Links */}
           <div>
-            <h3 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4">Quick Links</h3>
-            <ul className="space-y-1 sm:space-y-2">
-              <li>
-                <Link href="/services" className="text-sm sm:text-base text-gray-400 hover:text-barbershop-gold transition-colors">
-                  Services
-                </Link>
-              </li>
-              <li>
-                <Link href="/team" className="text-sm sm:text-base text-gray-400 hover:text-barbershop-gold transition-colors">
-                  Unser Team
-                </Link>
-              </li>
-              <li>
-                <Link href="/contact" className="text-sm sm:text-base text-gray-400 hover:text-barbershop-gold transition-colors">
-                  Kontakt
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Öffnungszeiten */}
-          <div>
-            <h3 className="text-lg font-semibold mb-3 sm:mb-4">Öffnungszeiten</h3>
-            <div className="space-y-1 sm:space-y-2 text-sm sm:text-base">
-              <p>Mo - Fr: 08:30 - 19:00</p>
-              <p>Sa: 08:30 - 18:00</p>
-              <p>So: Geschlossen</p>
-            </div>
-          </div>
-
-          {/* Kontakt Info */}
-          <div>
-            <h3 className="text-lg font-semibold mb-3 sm:mb-4">Kontakt</h3>
-            <div className="space-y-1 sm:space-y-2 text-sm sm:text-base">
-              <p>Pottendorfer Str. 138/3</p>
-              <p>2700 Wiener Neustadt</p>
-              <p>Tel: +43 660 9353277</p>
-              <p>Email: info@classman.at</p>
-            </div>
-            
-            <div className="flex justify-start gap-4 sm:gap-6 mt-4">
-              <a
-                href="https://facebook.com/classmanbarberclub"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-barbershop-gold transition-colors"
-              >
-                <Facebook className="w-5 h-5 sm:w-6 sm:h-6" />
-              </a>
-              <a
-                href="https://instagram.com/classmanbarberclub"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-barbershop-gold transition-colors"
-              >
-                <Instagram className="w-5 h-5 sm:w-6 sm:h-6" />
-              </a>
-              <a
-                href="https://wa.me/436609353277"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-barbershop-gold transition-colors"
-              >
-                <MessageCircle className="w-5 h-5 sm:w-6 sm:h-6" />
-              </a>
-            </div>
-          </div>
-        </div>
-
-        {/* Zusätzliche Sections für größere Bildschirme */}
-        <div className="hidden lg:grid lg:grid-cols-2 gap-8 mb-8">
-          {/* Rechtliches */}
-          <div>
-            <h3 className="text-lg font-semibold mb-4">Rechtliches</h3>
+            <h4 className="font-semibold text-lg mb-4 text-barbershop-gold">Quick Links</h4>
             <ul className="space-y-2">
-              <li>
-                <Link href="/impressum" className="text-gray-400 hover:text-barbershop-gold transition-colors">
-                  Impressum
-                </Link>
-              </li>
-              <li>
-                <Link href="/datenschutz" className="text-gray-400 hover:text-barbershop-gold transition-colors">
-                  Datenschutz
-                </Link>
-              </li>
+              {navigationLinks.map((link) => (
+                <li key={link.href}>
+                  <Link href={link.href} className="text-gray-300 hover:text-barbershop-gold transition-colors">
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
-          {/* Über uns */}
+          {/* Contact Info */}
           <div>
-            <h3 className="text-lg font-semibold mb-4">Über uns</h3>
-            <p className="text-gray-400">
-              Classman The Barber Club - Ihr professioneller Barbershop in Wiener Neustadt. 
-              Traditionelle Bartpflege und moderne Haarschnitte in entspannter Atmosphäre.
+            <h4 className="font-semibold text-lg mb-4 text-barbershop-gold">Kontakt</h4>
+            <div className="space-y-3">
+              <div className="flex items-center gap-3">
+                <Phone className="w-5 h-5 text-barbershop-gold" />
+                <a 
+                  href={`tel:${siteConfig.contact.phone}`} 
+                  className="text-gray-300 hover:text-barbershop-gold transition-colors"
+                >
+                  {siteConfig.contact.phoneDisplay}
+                </a>
+              </div>
+              <div className="flex items-center gap-3">
+                <Mail className="w-5 h-5 text-barbershop-gold" />
+                <a 
+                  href={`mailto:${siteConfig.contact.email}`}
+                  className="text-gray-300 hover:text-barbershop-gold transition-colors"
+                >
+                  {siteConfig.contact.email}
+                </a>
+              </div>
+              <div className="flex items-start gap-3">
+                <MapPin className="w-5 h-5 text-barbershop-gold mt-0.5" />
+                <address className="text-gray-300 not-italic">
+                  {siteConfig.contact.address.street}<br />
+                  {siteConfig.contact.address.city}<br />
+                  {siteConfig.contact.address.country}
+                </address>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Opening Hours */}
+        <div className="mt-8 pt-8 border-t border-gray-800">
+          <div className="grid gap-6 md:grid-cols-2">
+            <div>
+              <h4 className="font-semibold text-lg mb-4 text-barbershop-gold flex items-center gap-2">
+                <Clock className="w-5 h-5" />
+                Öffnungszeiten
+              </h4>
+              <div className="grid gap-2 text-sm">
+                <div className="flex justify-between">
+                  <span className="text-gray-300">Montag - Freitag:</span>
+                  <span className="text-pure-white">{siteConfig.businessHours.monday}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-300">Samstag:</span>
+                  <span className="text-pure-white">{siteConfig.businessHours.saturday}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-300">Sonntag:</span>
+                  <span className="text-pure-white">{siteConfig.businessHours.sunday}</span>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <h4 className="font-semibold text-lg mb-4 text-barbershop-gold">Terminavereinbarung</h4>
+              <p className="text-gray-300 text-sm mb-4">
+                Rufen Sie uns an oder schreiben Sie uns über WhatsApp für Ihren Wunschtermin.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-3">
+                <a 
+                  href={`tel:${siteConfig.contact.phone}`}
+                  className="btn btn-primary text-sm"
+                >
+                  Anrufen
+                </a>
+                <a 
+                  href={siteConfig.social.whatsapp}
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="btn btn-secondary text-sm"
+                >
+                  WhatsApp
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom Bar */}
+        <div className="mt-8 pt-8 border-t border-gray-800 text-center">
+          <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
+            <p className="text-gray-400 text-sm">
+              © {currentYear} {siteConfig.name}. Alle Rechte vorbehalten.
             </p>
+            <div className="flex gap-4 text-sm">
+              <Link href="/impressum" className="text-gray-400 hover:text-barbershop-gold transition-colors">
+                Impressum
+              </Link>
+              <Link href="/datenschutz" className="text-gray-400 hover:text-barbershop-gold transition-colors">
+                Datenschutz
+              </Link>
+            </div>
           </div>
-        </div>
-
-        {/* Mobile Rechtliches - nur auf kleinen Bildschirmen */}
-        <div className="lg:hidden border-t border-anthracite pt-6 mb-6">
-          <div className="grid grid-cols-2 gap-4">
-            <Link href="/impressum" className="text-sm text-gray-400 hover:text-barbershop-gold transition-colors text-center">
-              Impressum
-            </Link>
-            <Link href="/datenschutz" className="text-sm text-gray-400 hover:text-barbershop-gold transition-colors text-center">
-              Datenschutz
-            </Link>
-          </div>
-        </div>
-
-        <div className="pt-6 sm:pt-8 border-t border-anthracite text-center">
-          <p className="text-xs sm:text-sm text-gray-400">
-            © {new Date().getFullYear()} Classman The Barber Club. Alle Rechte vorbehalten.
-          </p>
         </div>
       </div>
     </footer>

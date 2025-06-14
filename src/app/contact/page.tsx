@@ -1,38 +1,118 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { MapPin, Phone, Mail, Clock, Facebook, Instagram, MessageCircle, X, User, AtSign, FileText, Send } from 'lucide-react'
+import { useState } from 'react'
+import { MapPin, Phone, Mail, Clock, MessageCircle, X, User, AtSign, FileText, Send, Calendar, AlertCircle, CheckCircle } from 'lucide-react'
+import { siteConfig } from '@/config/site'
+import { ContactFormData } from '@/lib/validations'
+import GoogleMap from '@/components/GoogleMap'
 
-interface FormData {
-  name: string
-  email: string
-  subject: string
-  message: string
+interface FormState {
+  data: ContactFormData
+  errors: Record<string, string>
+  isLoading: boolean
+  isSuccess: boolean
+  errorMessage: string
 }
 
 export default function Contact() {
-  const [formData, setFormData] = useState<FormData>({
-    name: '',
-    email: '',
-    subject: '',
-    message: ''
+  const [formState, setFormState] = useState<FormState>({
+    data: {
+      name: '',
+      email: '',
+      phone: '',
+      subject: '',
+      message: '',
+      service: '',
+      preferredDate: '',
+      preferredTime: ''
+    },
+    errors: {},
+    isLoading: false,
+    isSuccess: false,
+    errorMessage: ''
   })
 
   const [isWhatsAppOpen, setIsWhatsAppOpen] = useState(false)
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    // Hier würde die Logik für das Absenden des Formulars implementiert
-    console.log(formData)
-    alert('Vielen Dank für Ihre Nachricht! Wir werden uns schnellstmöglich bei Ihnen melden.')
-    setFormData({ name: '', email: '', subject: '', message: '' })
+    
+    setFormState(prev => ({ 
+      ...prev, 
+      isLoading: true, 
+      errors: {}, 
+      errorMessage: '',
+      isSuccess: false 
+    }))
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formState.data),
+      })
+
+      const result = await response.json()
+
+      if (result.success) {
+        setFormState(prev => ({
+          ...prev,
+          isLoading: false,
+          isSuccess: true,
+          data: {
+            name: '',
+            email: '',
+            phone: '',
+            subject: '',
+            message: '',
+            service: '',
+            preferredDate: '',
+            preferredTime: ''
+          }
+        }))
+      } else {
+        if (result.details) {
+          // Handle validation errors
+          const fieldErrors: Record<string, string> = {}
+          result.details.forEach((error: { field: string; message: string }) => {
+            fieldErrors[error.field] = error.message
+          })
+          setFormState(prev => ({
+            ...prev,
+            isLoading: false,
+            errors: fieldErrors
+          }))
+        } else {
+          setFormState(prev => ({
+            ...prev,
+            isLoading: false,
+            errorMessage: result.error || 'Ein Fehler ist aufgetreten'
+          }))
+        }
+      }
+    } catch (error) {
+      setFormState(prev => ({
+        ...prev,
+        isLoading: false,
+        errorMessage: 'Netzwerkfehler. Bitte versuchen Sie es später erneut.'
+      }))
+    }
   }
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target
-    setFormData(prev => ({
+    setFormState(prev => ({
       ...prev,
-      [name]: value
+      data: {
+        ...prev.data,
+        [name]: value
+      },
+      errors: {
+        ...prev.errors,
+        [name]: '' // Clear error when user starts typing
+      }
     }))
   }
 
@@ -43,7 +123,7 @@ export default function Contact() {
     const hour = now.getHours()
     
     const isOpen = (day >= 1 && day <= 5 && hour >= 9 && hour < 19) || // Mo-Fr 9-19
-                   (day === 6 && hour >= 9 && hour < 16) // Sa 9-16
+                   (day === 6 && hour >= 8 && hour < 17) // Sa 8-17
     
     return (
       <div className={`p-3 sm:p-4 rounded-lg ${isOpen ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
@@ -52,9 +132,9 @@ export default function Contact() {
           <span className="font-semibold text-sm sm:text-base">{isOpen ? 'Jetzt geöffnet' : 'Geschlossen'}</span>
         </div>
         <div className="text-xs sm:text-sm">
-          <p>Mo - Fr: 09:00 - 19:00</p>
-          <p>Sa: 09:00 - 16:00</p>
-          <p>So: Geschlossen</p>
+          <p>Mo - Fr: {siteConfig.businessHours.monday}</p>
+          <p>Sa: {siteConfig.businessHours.saturday}</p>
+          <p>So: {siteConfig.businessHours.sunday}</p>
         </div>
       </div>
     )
@@ -64,13 +144,13 @@ export default function Contact() {
     <main className="min-h-screen bg-cream-white">
       {/* Floating WhatsApp Button */}
       <a
-        href="https://wa.me/436609353277"
+        href={siteConfig.social.whatsapp}
         target="_blank"
         rel="noopener noreferrer"
-        className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 bg-green-500 text-white p-3 sm:p-4 rounded-full shadow-lg hover:bg-green-600 transition-colors"
-        onClick={() => setIsWhatsAppOpen(true)}
+        className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 bg-green-500 text-white p-3 sm:p-4 rounded-full shadow-lg hover:bg-green-600 transition-colors group"
+        aria-label="WhatsApp schreiben"
       >
-        <MessageCircle size={20} className="sm:w-6 sm:h-6" />
+        <MessageCircle size={20} className="sm:w-6 sm:h-6 group-hover:scale-110 transition-transform" />
       </a>
 
       {/* WhatsApp Popup */}
@@ -82,6 +162,7 @@ export default function Contact() {
               <button 
                 onClick={() => setIsWhatsAppOpen(false)}
                 className="text-gray-500 hover:text-gray-700"
+                aria-label="Schließen"
               >
                 <X size={20} className="sm:w-6 sm:h-6" />
               </button>
@@ -96,7 +177,7 @@ export default function Contact() {
               <li>Allgemeine Anfragen</li>
             </ul>
             <a
-              href="https://wa.me/436609353277"
+              href={siteConfig.social.whatsapp}
               target="_blank"
               rel="noopener noreferrer"
               className="btn btn-primary w-full"
@@ -119,24 +200,28 @@ export default function Contact() {
           </p>
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
             <a 
-              href="tel:+436609353277" 
+              href={`tel:${siteConfig.contact.phone}`} 
               className="btn bg-pure-white text-barbershop-gold hover:bg-cream-white font-semibold group"
+              aria-label={`Anrufen: ${siteConfig.contact.phoneDisplay}`}
             >
               <span className="flex items-center justify-center gap-2 text-sm sm:text-base">
                 <Phone className="w-4 h-4 sm:w-5 sm:h-5 group-hover:scale-110 transition-transform" />
-                <span className="hidden sm:inline">Jetzt anrufen: +43 660 9353277</span>
+                <span className="hidden sm:inline">Jetzt anrufen: {siteConfig.contact.phoneDisplay}</span>
                 <span className="sm:hidden">Anrufen</span>
               </span>
             </a>
-            <button 
-              onClick={() => setIsWhatsAppOpen(true)}
+            <a 
+              href={siteConfig.social.whatsapp}
+              target="_blank"
+              rel="noopener noreferrer"
               className="btn bg-pure-white text-barbershop-gold hover:bg-cream-white font-semibold group"
+              aria-label="WhatsApp schreiben"
             >
               <span className="flex items-center justify-center gap-2 text-sm sm:text-base">
                 <MessageCircle className="w-4 h-4 sm:w-5 sm:h-5 group-hover:scale-110 transition-transform" />
                 WhatsApp schreiben
               </span>
-            </button>
+            </a>
           </div>
         </div>
 
@@ -145,40 +230,44 @@ export default function Contact() {
           <div className="space-y-6 sm:space-y-8">
             <div className="card p-4 sm:p-6 md:p-8">
               <h3 className="text-xl sm:text-2xl font-serif font-semibold mb-4 sm:mb-6">Besuchen Sie uns</h3>
-              <div className="space-y-3 sm:space-y-4">
+              <div className="space-y-4 sm:space-y-6">
+                <OpeningHoursWidget />
+                
                 <div>
-                  <h4 className="font-semibold mb-1 sm:mb-2 text-sm sm:text-base">Öffnungszeiten</h4>
-                  <p className="text-warm-gray text-sm sm:text-base">Mo - Fr: 08:30 - 19:00</p>
-                  <p className="text-warm-gray text-sm sm:text-base">Sa: 08:30 - 18:00</p>
-                  <p className="text-warm-gray text-sm sm:text-base">So: Geschlossen</p>
+                  <h4 className="font-semibold mb-2 text-sm sm:text-base flex items-center gap-2">
+                    <MapPin className="w-4 h-4" />
+                    Adresse
+                  </h4>
+                  <address className="text-warm-gray text-sm sm:text-base not-italic">
+                    {siteConfig.name}<br />
+                    {siteConfig.contact.address.street}<br />
+                    {siteConfig.contact.address.city}<br />
+                    {siteConfig.contact.address.country}
+                  </address>
                 </div>
+                
                 <div>
-                  <h4 className="font-semibold mb-1 sm:mb-2 text-sm sm:text-base">Adresse</h4>
-                  <p className="text-warm-gray text-sm sm:text-base">Classman The Barber Club</p>
-                  <p className="text-warm-gray text-sm sm:text-base">Pottendorfer Str. 138/3</p>
-                  <p className="text-warm-gray text-sm sm:text-base">2700 Wiener Neustadt</p>
-                </div>
-                <div>
-                  <h4 className="font-semibold mb-1 sm:mb-2 text-sm sm:text-base">Kontakt</h4>
-                  <p className="text-warm-gray text-sm sm:text-base">Tel: +43 660 9353277</p>
-                  <p className="text-warm-gray text-sm sm:text-base">Email: info@classman.at</p>
+                  <h4 className="font-semibold mb-2 text-sm sm:text-base flex items-center gap-2">
+                    <Phone className="w-4 h-4" />
+                    Kontakt
+                  </h4>
+                  <div className="space-y-1">
+                    <p className="text-warm-gray text-sm sm:text-base">
+                      Tel: <a href={`tel:${siteConfig.contact.phone}`} className="hover:text-barbershop-gold transition-colors">{siteConfig.contact.phoneDisplay}</a>
+                    </p>
+                    <p className="text-warm-gray text-sm sm:text-base">
+                      Email: <a href={`mailto:${siteConfig.contact.email}`} className="hover:text-barbershop-gold transition-colors">{siteConfig.contact.email}</a>
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
 
             {/* Google Maps */}
-            <div className="card overflow-hidden h-64 sm:h-80 md:h-[400px] rounded-xl shadow-lg">
-              <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2658.4097483055!2d16.2429863158075!3d47.81626797981362!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x476d1b9c8c8c8c8c%3A0x8c8c8c8c8c8c8c8c!2sPottendorfer%20Str.%20138%2F3%2C%202700%20Wiener%20Neustadt!5e0!3m2!1sde!2sat!4v1647881234567!5m2!1sde!2sat"
-                width="100%"
-                height="100%"
-                style={{ border: 0 }}
-                allowFullScreen
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-                className="rounded-xl"
-              />
-            </div>
+            <GoogleMap 
+              className="card overflow-hidden rounded-xl shadow-lg" 
+              height="320px"
+            />
           </div>
 
           {/* Kontaktformular */}
@@ -187,6 +276,22 @@ export default function Contact() {
             <p className="subtitle">
               Haben Sie Fragen oder möchten Sie einen Termin vereinbaren? Wir freuen uns auf Ihre Nachricht!
             </p>
+            
+            {/* Success Message */}
+            {formState.isSuccess && (
+              <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-lg mb-6 flex items-center gap-2">
+                <CheckCircle className="w-5 h-5" />
+                <span>Vielen Dank! Ihre Nachricht wurde erfolgreich gesendet. Wir melden uns bald bei Ihnen.</span>
+              </div>
+            )}
+
+            {/* Error Message */}
+            {formState.errorMessage && (
+              <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg mb-6 flex items-center gap-2">
+                <AlertCircle className="w-5 h-5" />
+                <span>{formState.errorMessage}</span>
+              </div>
+            )}
             
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="form-group">
@@ -197,12 +302,16 @@ export default function Contact() {
                 <input
                   type="text"
                   name="name"
-                  value={formData.name}
+                  value={formState.data.name}
                   onChange={handleInputChange}
                   required
-                  className="input"
+                  className={`input ${formState.errors.name ? 'border-red-500' : ''}`}
                   placeholder="Ihr vollständiger Name"
+                  disabled={formState.isLoading}
                 />
+                {formState.errors.name && (
+                  <p className="text-red-500 text-sm mt-1">{formState.errors.name}</p>
+                )}
               </div>
               
               <div className="form-group">
@@ -213,12 +322,56 @@ export default function Contact() {
                 <input
                   type="email"
                   name="email"
-                  value={formData.email}
+                  value={formState.data.email}
                   onChange={handleInputChange}
                   required
-                  className="input"
-                  placeholder="ihre@email.de"
+                  className={`input ${formState.errors.email ? 'border-red-500' : ''}`}
+                  placeholder="ihre@email.com"
+                  disabled={formState.isLoading}
                 />
+                {formState.errors.email && (
+                  <p className="text-red-500 text-sm mt-1">{formState.errors.email}</p>
+                )}
+              </div>
+
+              <div className="form-group">
+                <label className="label flex items-center gap-2">
+                  <Phone className="w-4 h-4" />
+                  Telefon (optional)
+                </label>
+                <input
+                  type="tel"
+                  name="phone"
+                  value={formState.data.phone}
+                  onChange={handleInputChange}
+                  className={`input ${formState.errors.phone ? 'border-red-500' : ''}`}
+                  placeholder="+43 660 123 45 67"
+                  disabled={formState.isLoading}
+                />
+                {formState.errors.phone && (
+                  <p className="text-red-500 text-sm mt-1">{formState.errors.phone}</p>
+                )}
+              </div>
+
+              <div className="form-group">
+                <label className="label flex items-center gap-2">
+                  <Calendar className="w-4 h-4" />
+                  Service (optional)
+                </label>
+                <select
+                  name="service"
+                  value={formState.data.service}
+                  onChange={handleInputChange}
+                  className="input"
+                  disabled={formState.isLoading}
+                >
+                  <option value="">Service auswählen</option>
+                  <option value="Herrenschnitt">Herrenschnitt</option>
+                  <option value="Traditionelle Rasur">Traditionelle Rasur</option>
+                  <option value="Bart-Trimming">Bart-Trimming & Styling</option>
+                  <option value="Komplett-Paket">Komplett-Paket</option>
+                  <option value="Sonstiges">Sonstiges</option>
+                </select>
               </div>
               
               <div className="form-group">
@@ -229,12 +382,16 @@ export default function Contact() {
                 <input
                   type="text"
                   name="subject"
-                  value={formData.subject}
+                  value={formState.data.subject}
                   onChange={handleInputChange}
                   required
-                  className="input"
+                  className={`input ${formState.errors.subject ? 'border-red-500' : ''}`}
                   placeholder="Worum geht es?"
+                  disabled={formState.isLoading}
                 />
+                {formState.errors.subject && (
+                  <p className="text-red-500 text-sm mt-1">{formState.errors.subject}</p>
+                )}
               </div>
               
               <div className="form-group">
@@ -244,21 +401,28 @@ export default function Contact() {
                 </label>
                 <textarea
                   name="message"
-                  value={formData.message}
+                  value={formState.data.message}
                   onChange={handleInputChange}
                   required
-                  className="input textarea"
+                  className={`input textarea ${formState.errors.message ? 'border-red-500' : ''}`}
                   placeholder="Teilen Sie uns mit, wie wir Ihnen helfen können..."
+                  disabled={formState.isLoading}
                 />
+                {formState.errors.message && (
+                  <p className="text-red-500 text-sm mt-1">{formState.errors.message}</p>
+                )}
               </div>
               
               <button 
                 type="submit" 
                 className="form-submit-btn group"
+                disabled={formState.isLoading}
               >
                 <span className="flex items-center justify-center gap-2">
-                  Nachricht senden
-                  <Send className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" />
+                  {formState.isLoading ? 'Wird gesendet...' : 'Nachricht senden'}
+                  {!formState.isLoading && (
+                    <Send className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" />
+                  )}
                 </span>
               </button>
             </form>
