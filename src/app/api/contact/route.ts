@@ -69,7 +69,9 @@ export async function POST(request: NextRequest) {
 
     // Check if required environment variables are set
     if (!process.env.RESEND_API_KEY) {
+      if (process.env.NODE_ENV === 'development') {
       console.error('RESEND_API_KEY is not configured')
+    }
       return NextResponse.json(
         { 
           success: false, 
@@ -80,7 +82,9 @@ export async function POST(request: NextRequest) {
     }
 
     if (!process.env.CONTACT_EMAIL) {
+      if (process.env.NODE_ENV === 'development') {
       console.error('CONTACT_EMAIL is not configured')
+    }
       return NextResponse.json(
         { 
           success: false, 
@@ -203,11 +207,15 @@ export async function POST(request: NextRequest) {
     const customerEmailSuccess = customerEmail.status === 'fulfilled'
 
     if (!businessEmailSuccess) {
-      console.error('Failed to send business email:', businessEmail.reason)
+              if (process.env.NODE_ENV === 'development') {
+          console.error('Failed to send business email:', businessEmail.reason)
+        }
     }
 
     if (!customerEmailSuccess) {
-      console.error('Failed to send customer email:', customerEmail.reason)
+              if (process.env.NODE_ENV === 'development') {
+          console.error('Failed to send customer email:', customerEmail.reason)
+        }
     }
 
     // Return success even if customer email fails (business email is more important)
@@ -230,7 +238,9 @@ export async function POST(request: NextRequest) {
     }
 
   } catch (error) {
-    console.error('Contact form error:', error)
+    if (process.env.NODE_ENV === 'development') {
+      console.error('Contact form error:', error)
+    }
     return NextResponse.json(
       { 
         success: false, 

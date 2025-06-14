@@ -274,7 +274,7 @@ export default function AdminDashboard() {
                         </div>
                         <div>
                           <label className="label">E-Mail</label>
-                          <input type="email" className="input" defaultValue="admin@classiccuts.de" />
+                          <input type="email" className="input" defaultValue="admin@classman.at" />
                         </div>
                         <div>
                           <label className="label">Neues Passwort</label>

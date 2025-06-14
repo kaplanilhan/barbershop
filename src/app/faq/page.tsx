@@ -89,7 +89,7 @@ export default function FAQ() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a 
-                href="tel:+4912345678900" 
+                href="tel:+436609353277" 
                 className="btn bg-barbershop-gold text-pure-white hover:bg-gold-dark"
               >
                 Jetzt anrufen

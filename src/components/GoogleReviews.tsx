@@ -60,7 +60,7 @@ export default function GoogleReviews() {
           Überzeugen Sie sich selbst von unserer Qualität
         </p>
         <a
-          href="https://g.page/classiccuts/review"
+                        href="https://g.page/classman-barber-club/review"
           target="_blank"
           rel="noopener noreferrer"
           className="btn btn-primary"
@@ -100,7 +100,7 @@ export default function GoogleReviews() {
 
       <div className="text-center mt-8">
         <a
-          href="https://g.page/classiccuts"
+                      href="https://g.page/classman-barber-club"
           target="_blank"
           rel="noopener noreferrer"
           className="text-barbershop-gold hover:text-gold-dark transition-colors"

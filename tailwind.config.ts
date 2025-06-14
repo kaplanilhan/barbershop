@@ -18,6 +18,7 @@ const config: Config = {
         'pure-white': '#FFFFFF',
         copper: '#CD7F32',
         'dark-gold': '#8B6914',
+        'gold-dark': '#8B6914',
         'light-cream': '#FAF9F7',
       },
       fontFamily: {

@@ -4,15 +4,28 @@ import './globals.css'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import CookieBanner from '@/components/CookieBanner'
+import { CustomCursor, FloatingWhatsApp } from '@/components/ClientComponents'
 import { siteConfig } from '@/config/site'
 
-const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
-const playfair = Playfair_Display({ subsets: ['latin'], variable: '--font-playfair' })
+const inter = Inter({ 
+  subsets: ['latin'],
+  variable: '--font-inter',
+  display: 'swap',
+})
+
+const playfair = Playfair_Display({ 
+  subsets: ['latin'],
+  variable: '--font-playfair',
+  display: 'swap',
+})
 
 export const metadata: Metadata = {
-  title: `${siteConfig.name} - ${siteConfig.tagline}`,
+  title: {
+    default: siteConfig.name,
+    template: `%s | ${siteConfig.name}`
+  },
   description: siteConfig.description,
-  keywords: siteConfig.seo.keywords.join(', '),
+  keywords: ['Barbershop', 'Herrenfriseur', 'Wiener Neustadt', 'Haarschnitt', 'Rasur', 'Bartpflege'],
   authors: [{ name: siteConfig.name }],
   creator: siteConfig.name,
   publisher: siteConfig.name,
@@ -26,24 +39,24 @@ export const metadata: Metadata = {
     canonical: '/',
   },
   openGraph: {
-    title: `${siteConfig.name} - ${siteConfig.tagline}`,
-    description: siteConfig.description,
+    type: 'website',
+    locale: 'de_AT',
     url: siteConfig.url,
+    title: siteConfig.name,
+    description: siteConfig.description,
     siteName: siteConfig.name,
     images: [
       {
         url: siteConfig.ogImage,
         width: 1200,
         height: 630,
-        alt: `${siteConfig.name} - Premium Barbershop in Wiener Neustadt`,
+        alt: siteConfig.name,
       },
     ],
-    locale: 'de_AT',
-    type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: `${siteConfig.name} - ${siteConfig.tagline}`,
+    title: siteConfig.name,
     description: siteConfig.description,
     images: [siteConfig.ogImage],
   },
@@ -61,6 +74,12 @@ export const metadata: Metadata = {
   verification: {
     // google: 'google-site-verification-code',
   },
+  manifest: '/manifest.json',
+  icons: {
+    icon: '/favicon.ico',
+    shortcut: '/favicon-16x16.png',
+    apple: '/apple-touch-icon.png',
+  },
 }
 
 export default function RootLayout({
@@ -69,7 +88,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="de" className={`${inter.variable} ${playfair.variable}`}>
+    <html lang="de" className="scroll-smooth">
       <head>
         {/* Local Business Schema */}
         <script
@@ -154,10 +173,14 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="font-inter antialiased">
+      <body className={`${inter.variable} ${playfair.variable} font-sans antialiased bg-pure-white dark:bg-deep-black text-deep-black dark:text-pure-white transition-colors duration-300`}>
+        <CustomCursor />
         <Header />
-        <main>{children}</main>
+        <main className="min-h-screen">
+          {children}
+        </main>
         <Footer />
+        <FloatingWhatsApp />
         <CookieBanner />
       </body>
     </html>
