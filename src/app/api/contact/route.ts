@@ -3,7 +3,12 @@ import { Resend } from 'resend'
 import { contactSchema, formatValidationErrors } from '@/lib/validations'
 import { siteConfig } from '@/config/site'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
+// Check if RESEND_API_KEY is configured
+if (!process.env.RESEND_API_KEY) {
+  console.warn('RESEND_API_KEY is not configured. Contact form will be disabled.')
+}
+
+const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null
 
 // Simple in-memory rate limiting (in production, use Redis or a database)
 const rateLimitMap = new Map<string, { count: number; timestamp: number }>()
@@ -67,20 +72,19 @@ export async function POST(request: NextRequest) {
 
     const { name, email, phone, subject, message, service, preferredDate, preferredTime } = validationResult.data
 
-    // Check if required environment variables are set
-    if (!process.env.RESEND_API_KEY) {
-      if (process.env.NODE_ENV === 'development') {
-      console.error('RESEND_API_KEY is not configured')
-    }
+    // Check if Resend is configured
+    if (!resend) {
+      console.error('Resend is not configured. Please add RESEND_API_KEY to your environment variables.')
       return NextResponse.json(
         { 
           success: false, 
-          error: 'E-Mail-Service ist nicht konfiguriert' 
+          error: 'E-Mail-Service ist temporär nicht verfügbar. Bitte versuchen Sie es später erneut oder kontaktieren Sie uns telefonisch.' 
         },
-        { status: 500 }
+        { status: 503 }
       )
     }
 
+    // Check if required environment variables are set
     if (!process.env.CONTACT_EMAIL) {
       if (process.env.NODE_ENV === 'development') {
       console.error('CONTACT_EMAIL is not configured')
