@@ -9,57 +9,16 @@ const BeforeAfterSlider = dynamic(() => import('@/components/BeforeAfterSlider')
 })
 import Image from 'next/image'
 import Link from 'next/link'
-import { Check, Clock, Star, Users, Award, Scissors, Sparkles } from 'lucide-react'
+import { Check, Clock, Award, Scissors, Sparkles } from 'lucide-react'
 
 import { siteConfig } from '@/config/site'
+import { services, type ServiceIcon } from '@/content/knowledge'
 
-const services = [
-  {
-    id: 'herrenschnitt',
-    title: 'Klassischer Herrenschnitt',
-    description: 'Der perfekte Schnitt für den modernen Gentleman. Von klassisch bis trendy - wir schneiden nach Ihren Wünschen.',
-    price: 'ab 25€',
-    duration: '45 Min',
-    image: '/images/services/service-haircut.jpg',
-    features: [
-      'Professionelle Beratung',
-      'Waschen & Styling',
-      'Hochwertige Produkte',
-      'Nachschnitt-Garantie'
-    ],
-    icon: Scissors
-  },
-  {
-    id: 'rasur',
-    title: 'Traditionelle Rasur',
-    description: 'Entspannung pur mit heißen Tüchern und Rasiermesser. Ein Erlebnis für alle Sinne.',
-    price: 'ab 35€',
-    duration: '60 Min',
-    image: '/images/services/service-shave.jpg',
-    features: [
-      'Heißtuch-Behandlung',
-      'Premium Rasierschaum',
-      'Traditionelles Rasiermesser',
-      'Aftershave-Pflege'
-    ],
-    icon: Sparkles
-  },
-  {
-    id: 'bartpflege',
-    title: 'Bart-Trimming & Styling',
-    description: 'Professionelle Bartpflege für Ihren perfekten Look. Trimmen, Formen und Styling.',
-    price: 'ab 20€',
-    duration: '30 Min',
-    image: '/images/services/service-beard.jpg',
-    features: [
-      'Bart-Trimming',
-      'Konturenschnitt',
-      'Bart-Öl Behandlung',
-      'Styling-Tipps'
-    ],
-    icon: Award
-  }
-]
+const serviceIcons: Record<ServiceIcon, typeof Scissors> = {
+  scissors: Scissors,
+  sparkles: Sparkles,
+  award: Award,
+}
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 30 },
@@ -132,9 +91,10 @@ export default function ServicesPage() {
             animate="visible"
           >
             {services.map((service, index) => {
-              const IconComponent = service.icon
+              const IconComponent = serviceIcons[service.icon]
               return (
                 <motion.div 
+                  id={service.id}
                   key={service.id}
                   className={`grid lg:grid-cols-2 gap-8 lg:gap-12 items-center ${
                     index % 2 === 1 ? 'lg:flex-row-reverse' : ''
@@ -350,4 +310,4 @@ export default function ServicesPage() {
       </section>
     </div>
   )
-} 
+}

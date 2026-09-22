@@ -126,7 +126,7 @@ export default function Contact() {
                    (day === 6 && hour >= 8 && hour < 17) // Sa 8-17
     
     return (
-      <div className={`p-3 sm:p-4 rounded-lg ${isOpen ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
+      <div id="opening-hours" className={`p-3 sm:p-4 rounded-lg ${isOpen ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
         <div className="flex items-center gap-2 mb-2">
           <Clock className="w-4 h-4 sm:w-5 sm:h-5" />
           <span className="font-semibold text-sm sm:text-base">{isOpen ? 'Jetzt geöffnet' : 'Geschlossen'}</span>
