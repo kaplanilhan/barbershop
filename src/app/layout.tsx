@@ -1,24 +1,10 @@
 import type { Metadata } from 'next'
-import { Inter, Playfair_Display } from 'next/font/google'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import './globals.css'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
-import CookieBanner from '@/components/CookieBanner'
-import { CustomCursor, FloatingWhatsApp } from '@/components/ClientComponents'
+import { FloatingWhatsApp } from '@/components/ClientComponents'
 import { siteConfig } from '@/config/site'
-
-const inter = Inter({ 
-  subsets: ['latin'],
-  variable: '--font-inter',
-  display: 'swap',
-})
-
-const playfair = Playfair_Display({ 
-  subsets: ['latin'],
-  variable: '--font-playfair',
-  display: 'swap',
-})
 
 export const metadata: Metadata = {
   title: {
@@ -154,7 +140,7 @@ export default function RootLayout({
                   }
                 },
                 {
-                  "@type": "Offer", 
+                  "@type": "Offer",
                   "itemOffered": {
                     "@type": "Service",
                     "name": "Traditionelle Rasur",
@@ -164,7 +150,7 @@ export default function RootLayout({
                 {
                   "@type": "Offer",
                   "itemOffered": {
-                    "@type": "Service", 
+                    "@type": "Service",
                     "name": "Bartpflege",
                     "description": "Professionelle Bartpflege und Styling"
                   }
@@ -174,17 +160,15 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className={`${inter.variable} ${playfair.variable} font-sans antialiased bg-pure-white dark:bg-deep-black text-deep-black dark:text-pure-white transition-colors duration-300`}>
-        <CustomCursor />
+      <body className="font-sans antialiased bg-pure-white dark:bg-deep-black text-deep-black dark:text-pure-white transition-colors duration-300">
         <Header />
-        <main className="min-h-screen">
+        <div className="min-h-screen">
           {children}
-        </main>
+        </div>
         <Footer />
         <FloatingWhatsApp />
-        <CookieBanner />
         <SpeedInsights />
       </body>
     </html>
   )
-} 
+}

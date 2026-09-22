@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Phone, Menu, X, MapPin, Clock, Star, ChevronDown } from 'lucide-react'
+import { Phone, Menu, X, MapPin, Clock } from 'lucide-react'
 import { FaWhatsapp } from 'react-icons/fa'
 import { siteConfig } from '@/config/site'
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock'
@@ -39,7 +39,7 @@ export default function Header() {
     } else if (targetElement) {
       enableBodyScroll(targetElement)
     }
-    
+
     return () => {
       if (targetElement) enableBodyScroll(targetElement)
     }
@@ -69,10 +69,10 @@ export default function Header() {
 
   return (
     <>
-      <motion.header 
+      <motion.header
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          isScrolled 
-            ? 'bg-pure-white/95 backdrop-blur-md shadow-lg' 
+          isScrolled
+            ? 'bg-pure-white/95 backdrop-blur-md shadow-lg'
             : 'bg-pure-white/90 backdrop-blur-sm'
         }`}
         initial={{ y: -100 }}
@@ -94,10 +94,6 @@ export default function Header() {
                 </div>
               </div>
               <div className="flex items-center gap-4">
-                <div className="flex items-center gap-1">
-                  <Star className="w-4 h-4 fill-barbershop-gold text-barbershop-gold" />
-                  <span>4.9/5 bei Google</span>
-                </div>
                 <a href={`tel:${siteConfig.contact.phone}`} className="flex items-center gap-2 hover:text-barbershop-gold transition-colors">
                   <Phone className="w-4 h-4" />
                   <span>{siteConfig.contact.phoneDisplay}</span>
@@ -149,7 +145,7 @@ export default function Header() {
             {/* Desktop CTA Buttons */}
             <div className="hidden lg:flex items-center gap-4">
               <ThemeToggle />
-              <a 
+              <a
                 href={`tel:${siteConfig.contact.phone}`}
                 className="btn btn-outline"
                 aria-label={`Anrufen: ${siteConfig.contact.phoneDisplay}`}
@@ -157,7 +153,7 @@ export default function Header() {
                 <Phone className="w-4 h-4 mr-2" />
                 Anrufen
               </a>
-              <a 
+              <a
                 href={siteConfig.social.whatsapp}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -246,7 +242,7 @@ export default function Header() {
 
                 {/* Navigation Links */}
                 <nav className="space-y-2">
-                  {navigation.map((item, index) => (
+                  {navigation.map((item) => (
                     <motion.div key={item.name} variants={itemVariants}>
                       <Link
                         href={item.href}
@@ -307,4 +303,4 @@ export default function Header() {
       </AnimatePresence>
     </>
   )
-} 
+}

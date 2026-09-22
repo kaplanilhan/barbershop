@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { motion } from 'framer-motion'
-import { Home, ArrowLeft, Scissors, Search } from 'lucide-react'
+import { Home, ArrowLeft, Scissors } from 'lucide-react'
 
 export default function NotFound() {
   return (
@@ -17,7 +17,7 @@ export default function NotFound() {
         >
           <motion.div
             className="text-8xl sm:text-9xl md:text-[12rem] font-bold text-barbershop-gold/20 select-none"
-            animate={{ 
+            animate={{
               textShadow: [
                 "0 0 20px rgba(184, 134, 11, 0.3)",
                 "0 0 40px rgba(184, 134, 11, 0.5)",
@@ -56,7 +56,7 @@ export default function NotFound() {
             Seite nicht gefunden
           </h1>
           <p className="text-lg sm:text-xl text-gray-300 mb-8 leading-relaxed">
-            Diese Seite scheint einen schlechten Haarschnitt bekommen zu haben. 
+            Diese Seite scheint einen schlechten Haarschnitt bekommen zu haben.
             <br className="hidden sm:block" />
             Aber keine Sorge - wir können das reparieren!
           </p>
@@ -79,7 +79,7 @@ export default function NotFound() {
               Zur Startseite
             </motion.div>
           </Link>
-          
+
           <motion.button
             onClick={() => window.history.back()}
             className="btn btn-outline border-barbershop-gold text-barbershop-gold hover:bg-barbershop-gold hover:text-deep-black inline-flex items-center gap-2"
@@ -155,4 +155,4 @@ export default function NotFound() {
       </div>
     </div>
   )
-} 
+}

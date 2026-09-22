@@ -39,36 +39,36 @@ export default function ServicesPage() {
       {/* Hero Section */}
       <section className="section bg-gradient-to-br from-deep-black via-anthracite to-deep-black text-pure-white">
         <div className="container">
-          <motion.div 
+          <motion.div
             className="max-w-4xl mx-auto text-center"
             initial="hidden"
             animate="visible"
             variants={staggerContainer}
           >
-            <motion.h1 
+            <motion.h1
               className="text-4xl sm:text-5xl md:text-6xl font-serif font-bold mb-6"
               variants={fadeInUp}
             >
               Unsere <span className="text-barbershop-gold">Services</span>
             </motion.h1>
-            <motion.p 
+            <motion.p
               className="text-lg sm:text-xl text-gray-200 mb-8"
               variants={fadeInUp}
             >
-              Professionelle Dienstleistungen für den modernen Mann. 
+              Professionelle Dienstleistungen für den modernen Mann.
               Qualität, Stil und Perfektion in jedem Detail.
             </motion.p>
-            <motion.div 
+            <motion.div
               className="flex flex-col sm:flex-row gap-4 justify-center"
               variants={fadeInUp}
             >
-              <a 
+              <a
                 href={`tel:${siteConfig.contact.phone}`}
                 className="btn btn-primary"
               >
                 Termin vereinbaren
               </a>
-              <a 
+              <a
                 href={siteConfig.social.whatsapp}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -84,7 +84,7 @@ export default function ServicesPage() {
       {/* Services Grid */}
       <section className="section bg-pure-white dark:bg-deep-black">
         <div className="container">
-          <motion.div 
+          <motion.div
             className="grid gap-8 lg:gap-12"
             variants={staggerContainer}
             initial="hidden"
@@ -93,7 +93,7 @@ export default function ServicesPage() {
             {services.map((service, index) => {
               const IconComponent = serviceIcons[service.icon]
               return (
-                <motion.div 
+                <motion.div
                   id={service.id}
                   key={service.id}
                   className={`grid lg:grid-cols-2 gap-8 lg:gap-12 items-center ${
@@ -103,7 +103,7 @@ export default function ServicesPage() {
                 >
                   {/* Service Image */}
                   <div className={`${index % 2 === 1 ? 'lg:order-2' : 'lg:order-1'}`}>
-                    <motion.div 
+                    <motion.div
                       className="relative h-64 sm:h-80 lg:h-96 rounded-xl overflow-hidden"
                       whileHover={{ scale: 1.02 }}
                       transition={{ duration: 0.3 }}
@@ -116,7 +116,7 @@ export default function ServicesPage() {
                         sizes="(max-width: 768px) 100vw, 50vw"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-                      
+
                       {/* Service Badge */}
                       <div className="absolute top-4 left-4 bg-barbershop-gold text-white px-3 py-1 rounded-full text-sm font-medium">
                         {service.price}
@@ -179,7 +179,7 @@ export default function ServicesPage() {
       {/* Before/After Section */}
       <section className="section bg-cream-white dark:bg-anthracite">
         <div className="container">
-          <motion.div 
+          <motion.div
             className="text-center mb-12"
             variants={fadeInUp}
             initial="hidden"
@@ -189,12 +189,12 @@ export default function ServicesPage() {
               Unsere <span className="text-barbershop-gold">Ergebnisse</span>
             </h2>
             <p className="text-lg text-warm-gray max-w-2xl mx-auto">
-              Sehen Sie selbst, wie wir das Beste aus jedem Look herausholen. 
+              Sehen Sie selbst, wie wir das Beste aus jedem Look herausholen.
               Perfektion in jedem Detail.
             </p>
           </motion.div>
 
-          <motion.div 
+          <motion.div
             className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8"
             variants={staggerContainer}
             initial="hidden"
@@ -238,19 +238,19 @@ export default function ServicesPage() {
       {/* Stats Section */}
       <section className="section bg-barbershop-gold text-white">
         <div className="container">
-          <motion.div 
+          <motion.div
             className="grid grid-cols-2 lg:grid-cols-4 gap-8"
             variants={staggerContainer}
             initial="hidden"
             animate="visible"
           >
             {[
-              { number: '500+', label: 'Zufriedene Kunden' },
-              { number: '5', label: 'Jahre Erfahrung' },
-              { number: '4.9', label: 'Google Bewertung' },
-              { number: '100%', label: 'Qualitätsgarantie' }
+              { number: '3', label: 'Kernservices' },
+              { number: '2', label: 'Erfahrene Barber' },
+              { number: '6', label: 'Tage pro Woche' },
+              { number: '1', label: 'Persönliches Erlebnis' }
             ].map((stat, index) => (
-              <motion.div 
+              <motion.div
                 key={index}
                 className="text-center"
                 variants={fadeInUp}
@@ -275,30 +275,30 @@ export default function ServicesPage() {
             initial="hidden"
             animate="visible"
           >
-            <motion.h2 
+            <motion.h2
               className="text-3xl sm:text-4xl font-serif font-bold mb-6"
               variants={fadeInUp}
             >
               Bereit für Ihren neuen Look?
             </motion.h2>
-            <motion.p 
+            <motion.p
               className="text-lg sm:text-xl text-gray-300 mb-8 max-w-2xl mx-auto"
               variants={fadeInUp}
             >
-              Vereinbaren Sie noch heute einen Termin und erleben Sie 
+              Vereinbaren Sie noch heute einen Termin und erleben Sie
               Premium-Service auf höchstem Niveau.
             </motion.p>
-            <motion.div 
+            <motion.div
               className="flex flex-col sm:flex-row gap-4 justify-center"
               variants={fadeInUp}
             >
-              <a 
+              <a
                 href={`tel:${siteConfig.contact.phone}`}
                 className="btn bg-barbershop-gold text-white hover:bg-copper"
               >
                 Jetzt anrufen
               </a>
-              <Link 
+              <Link
                 href="/contact"
                 className="btn btn-outline border-barbershop-gold text-barbershop-gold hover:bg-barbershop-gold hover:text-white"
               >

@@ -6,7 +6,7 @@ export const siteConfig = {
   url: "https://classman.at",
   ogImage: "https://classman.at/og.jpg",
   established: "2025",
-  
+
   contact: {
     phone: "+43 660 9353277",
     phoneFormatted: "+43 660 9353277",
@@ -23,35 +23,35 @@ export const siteConfig = {
       lng: 16.2432
     }
   },
-  
+
   social: {
     facebook: "https://facebook.com/classmanbarberclub",
-    instagram: "https://instagram.com/classmanbarberclub", 
+    instagram: "https://instagram.com/classmanbarberclub",
     whatsapp: "https://wa.me/436609353277",
     whatsappText: "Hallo! Ich möchte gerne einen Termin vereinbaren."
   },
-  
+
   businessHours: {
     monday: "9:00 - 19:00",
-    tuesday: "9:00 - 19:00", 
+    tuesday: "9:00 - 19:00",
     wednesday: "9:00 - 19:00",
     thursday: "9:00 - 19:00",
     friday: "9:00 - 19:00",
     saturday: "8:00 - 17:00",
     sunday: "Geschlossen"
   },
-  
+
   team: {
     totalBarbers: 2,
     experienceYears: "10+",
     foundingYear: 2025
   },
-  
+
   seo: {
     keywords: [
       "Barbershop Wiener Neustadt",
       "Herrenfrisuren",
-      "Bartpflege", 
+      "Bartpflege",
       "Classman The Barber Club",
       "Friseur Wiener Neustadt",
       "Herrensalon",
@@ -61,7 +61,7 @@ export const siteConfig = {
       "Premium Barbershop"
     ]
   },
-  
+
   features: [
     {
       title: "Premium Qualität",
@@ -69,13 +69,13 @@ export const siteConfig = {
       icon: "Star"
     },
     {
-      title: "Erfahrene Barber", 
+      title: "Erfahrene Barber",
       description: "Ausgebildete Profis mit Leidenschaft für ihr Handwerk",
       icon: "Users"
     },
     {
-      title: "Ausgezeichnet",
-      description: "Mehrfach prämiert für exzellenten Service und Qualität", 
+      title: "Sorgfältiges Handwerk",
+      description: "Persönliche Beratung und ein Ergebnis, das zu Ihnen passt",
       icon: "Award"
     },
     {
@@ -91,4 +91,4 @@ export const navigationLinks = [
   { href: "/services", label: "Services" },
   { href: "/team", label: "Team" },
   { href: "/contact", label: "Kontakt" }
-] as const 
+] as const

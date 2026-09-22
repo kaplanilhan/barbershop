@@ -1,10 +1,10 @@
 'use client'
 
-import { useRef, useEffect } from 'react'
+import { useRef, useEffect, type ComponentProps } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { FaFacebook, FaInstagram, FaWhatsapp } from 'react-icons/fa'
-import { Star, Users, Award, Clock, ChevronRight, Quote, Phone, MessageCircle } from 'lucide-react'
+import { Star, Users, Award, Clock, Phone, MessageCircle } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { useScroll, useTransform, useSpring, useInView } from 'framer-motion'
 import { siteConfig } from '@/config/site'
@@ -42,7 +42,7 @@ const slideInRight = {
 function AnimatedCounter({ value, duration = 2 }: { value: number; duration?: number }) {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true })
-  const springValue = useSpring(0, { 
+  const springValue = useSpring(0, {
     duration: duration * 1000,
     bounce: 0
   })
@@ -63,7 +63,7 @@ function AnimatedCounter({ value, duration = 2 }: { value: number; duration?: nu
 }
 
 // Magnetic Button Component
-function MagneticButton({ children, className, ...props }: any) {
+function MagneticButton({ children, className, ...props }: ComponentProps<typeof motion.a>) {
   const ref = useRef<HTMLAnchorElement>(null)
 
   const handleMouseMove = (e: React.MouseEvent) => {
@@ -113,7 +113,7 @@ export default function Home() {
     <main>
       {/* Hero Section mit Parallax */}
       <section ref={heroRef} className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        <motion.div 
+        <motion.div
           className="absolute inset-0 z-0"
           style={{ y }}
         >
@@ -131,20 +131,20 @@ export default function Home() {
           <div className="absolute inset-0 bg-gradient-to-br from-black/60 via-black/40 to-black/70" />
           <div className="absolute inset-0 bg-gradient-to-t from-deep-black/30 to-transparent" />
         </motion.div>
-        
-        <motion.div 
+
+        <motion.div
           className="container relative z-10 text-center text-pure-white px-4"
           style={{ opacity }}
         >
           <div className="max-w-5xl mx-auto">
-            <motion.h1 
+            <motion.h1
               className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-serif font-bold mb-6 sm:mb-8"
               initial={{ opacity: 0, y: 50 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
             >
               Willkommen bei
-              <motion.span 
+              <motion.span
                 className="block text-barbershop-gold mt-2 sm:mt-4"
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
@@ -153,8 +153,8 @@ export default function Home() {
                 {siteConfig.name}
               </motion.span>
             </motion.h1>
-            
-            <motion.p 
+
+            <motion.p
               className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-200 mb-8 sm:mb-12 max-w-4xl mx-auto leading-relaxed font-light drop-shadow-xl"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
@@ -162,35 +162,35 @@ export default function Home() {
             >
               {siteConfig.description}
             </motion.p>
-            
-            <motion.div 
+
+            <motion.div
               className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 1.0 }}
             >
-              <MagneticButton 
-                href={`tel:${siteConfig.contact.phone}`} 
-                className="btn btn-primary text-base sm:text-lg px-8 sm:px-10 py-4 sm:py-5 group" 
+              <MagneticButton
+                href={`tel:${siteConfig.contact.phone}`}
+                className="btn btn-primary text-base sm:text-lg px-8 sm:px-10 py-4 sm:py-5 group"
                 aria-label={`Anrufen: ${siteConfig.contact.phoneDisplay}`}
               >
                 <Phone className="w-5 h-5 sm:w-6 sm:h-6 mr-2 sm:mr-3 group-hover:animate-pulse" />
                 Jetzt anrufen
               </MagneticButton>
-              
-              <MagneticButton 
-                href={siteConfig.social.whatsapp} 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                className="btn btn-secondary text-base sm:text-lg px-8 sm:px-10 py-4 sm:py-5 group" 
+
+              <MagneticButton
+                href={siteConfig.social.whatsapp}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn btn-secondary text-base sm:text-lg px-8 sm:px-10 py-4 sm:py-5 group"
                 aria-label="WhatsApp schreiben"
               >
                 <MessageCircle className="w-5 h-5 sm:w-6 sm:h-6 mr-2 sm:mr-3 group-hover:animate-pulse" />
                 WhatsApp schreiben
               </MagneticButton>
             </motion.div>
-            
-            <motion.div 
+
+            <motion.div
               className="mt-12 sm:mt-16"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -227,7 +227,7 @@ export default function Home() {
       <section className="section bg-pure-white">
         <div className="container">
           <div className="grid gap-8 sm:gap-10 md:gap-12 lg:grid-cols-2 items-center">
-            <motion.div 
+            <motion.div
               variants={slideInLeft}
               initial="hidden"
               whileInView="visible"
@@ -244,7 +244,7 @@ export default function Home() {
                 {siteConfig.longDescription}
               </p>
               <div className="grid grid-cols-2 gap-4 sm:gap-6 mb-6 sm:mb-8">
-                <motion.div 
+                <motion.div
                   className="text-center"
                   variants={fadeInUp}
                   initial="hidden"
@@ -254,7 +254,7 @@ export default function Home() {
                   <AnimatedCounter value={siteConfig.team.totalBarbers} />
                   <p className="text-sm sm:text-base text-warm-gray">Erfahrene Barber</p>
                 </motion.div>
-                <motion.div 
+                <motion.div
                   className="text-center"
                   variants={fadeInUp}
                   initial="hidden"
@@ -274,8 +274,8 @@ export default function Home() {
                 </Link>
               </motion.div>
             </motion.div>
-            
-            <motion.div 
+
+            <motion.div
               className="relative h-64 sm:h-80 md:h-96 lg:h-[500px] order-1 lg:order-2"
               variants={slideInRight}
               initial="hidden"
@@ -305,7 +305,7 @@ export default function Home() {
       {/* Features Section mit Stagger Animation */}
       <section className="section bg-cream-white">
         <div className="container">
-          <motion.h2 
+          <motion.h2
             className="section-title"
             variants={fadeInUp}
             initial="hidden"
@@ -314,8 +314,8 @@ export default function Home() {
           >
             Warum {siteConfig.name}?
           </motion.h2>
-          
-          <motion.div 
+
+          <motion.div
             className="grid gap-6 sm:gap-8 sm:grid-cols-2 lg:grid-cols-4"
             variants={staggerContainer}
             initial="hidden"
@@ -330,18 +330,18 @@ export default function Home() {
                 Clock: Clock
               }
               const IconComponent = iconMap[feature.icon as keyof typeof iconMap] || Star
-              
+
               return (
-                <motion.div 
-                  key={index} 
+                <motion.div
+                  key={index}
                   className="text-center group"
                   variants={fadeInUp}
-                  whileHover={{ 
+                  whileHover={{
                     y: -10,
                     transition: { duration: 0.3 }
                   }}
                 >
-                  <motion.div 
+                  <motion.div
                     className="w-16 h-16 sm:w-20 sm:h-20 mx-auto bg-barbershop-gold rounded-full flex items-center justify-center mb-3 sm:mb-4 group-hover:scale-110 transition-transform"
                     whileHover={{ rotate: 360 }}
                     transition={{ duration: 0.6 }}
@@ -360,7 +360,7 @@ export default function Home() {
       {/* Services Section mit 3D Card Effects */}
       <section className="section bg-pure-white">
         <div className="container">
-          <motion.h2 
+          <motion.h2
             className="section-title"
             variants={fadeInUp}
             initial="hidden"
@@ -369,8 +369,8 @@ export default function Home() {
           >
             Beliebte Services
           </motion.h2>
-          
-          <motion.div 
+
+          <motion.div
             className="grid gap-6 sm:gap-8 sm:grid-cols-2 lg:grid-cols-3"
             variants={staggerContainer}
             initial="hidden"
@@ -397,16 +397,16 @@ export default function Home() {
                 image: "/images/services/service-beard.jpg"
               }
             ].map((service, index) => (
-              <motion.div 
+              <motion.div
                 key={index}
                 className="card hover-lift group"
                 variants={scaleIn}
-                whileHover={{ 
-                  y: -10, 
+                whileHover={{
+                  y: -10,
                   rotateY: 5,
                   transition: { duration: 0.3 }
                 }}
-                style={{ 
+                style={{
                   transformStyle: "preserve-3d",
                   perspective: 1000
                 }}
@@ -430,8 +430,8 @@ export default function Home() {
               </motion.div>
             ))}
           </motion.div>
-          
-          <motion.div 
+
+          <motion.div
             className="text-center mt-8 sm:mt-12"
             variants={fadeInUp}
             initial="hidden"
@@ -450,81 +450,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Testimonials Section */}
-      <section className="section bg-deep-black text-pure-white">
-        <div className="container">
-          <motion.h2 
-            className="section-title"
-            variants={fadeInUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-          >
-            Was unsere Kunden sagen
-          </motion.h2>
-          
-          <motion.div 
-            className="grid gap-6 sm:gap-8 sm:grid-cols-2 lg:grid-cols-3"
-            variants={staggerContainer}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.2 }}
-          >
-            {[
-              {
-                text: "Der beste Barbershop in der Stadt! Professioneller Service, entspannte Atmosphäre und das Ergebnis ist jedes Mal perfekt. Kann ich nur empfehlen!",
-                name: "Michael König",
-                role: "Stammkunde seit 2019",
-                initials: "MK"
-              },
-              {
-                text: "Endlich ein Barbershop, der versteht was Mann will. Super Team, faire Preise und immer ein tolles Ergebnis. Besonders die Rasur ist ein Erlebnis!",
-                name: "Thomas Hartmann",
-                role: "Kunde seit 2020",
-                initials: "TH"
-              },
-              {
-                text: "Einfach anrufen und Termin vereinbaren - das Team ist wirklich professionell. Ich gehe zu keinem anderen Barbershop mehr!",
-                name: "Peter Weber",
-                role: "Kunde seit 2021",
-                initials: "PW"
-              }
-            ].map((testimonial, index) => (
-              <motion.div 
-                key={index}
-                className="bg-anthracite rounded-xl p-6 sm:p-8 relative"
-                variants={fadeInUp}
-                whileHover={{ 
-                  scale: 1.02,
-                  transition: { duration: 0.3 }
-                }}
-              >
-                <Quote className="w-10 h-10 sm:w-12 sm:h-12 text-barbershop-gold/20 absolute top-4 right-4" />
-                <div className="flex gap-1 mb-3 sm:mb-4">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="w-4 h-4 sm:w-5 sm:h-5 fill-barbershop-gold text-barbershop-gold" />
-                  ))}
-                </div>
-                <p className="mb-4 sm:mb-6 italic text-sm sm:text-base">
-                  "{testimonial.text}"
-                </p>
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-barbershop-gold rounded-full flex items-center justify-center">
-                    <span className="font-bold text-sm sm:text-base">{testimonial.initials}</span>
-                  </div>
-                  <div>
-                    <p className="font-semibold text-sm sm:text-base">{testimonial.name}</p>
-                    <p className="text-xs sm:text-sm text-gray-400">{testimonial.role}</p>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      </section>
-
       {/* CTA Section */}
-      <motion.section 
+      <motion.section
         className="section bg-barbershop-gold text-pure-white"
         variants={fadeInUp}
         initial="hidden"
@@ -536,22 +463,22 @@ export default function Home() {
             Bereit für Ihren neuen Look?
           </h2>
           <p className="text-base sm:text-lg md:text-xl mb-6 sm:mb-8 max-w-2xl mx-auto">
-            Rufen Sie uns an oder schreiben Sie uns und erleben Sie Premium-Barbershop-Service 
+            Rufen Sie uns an oder schreiben Sie uns und erleben Sie Premium-Barbershop-Service
             auf höchstem Niveau.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
-            <MagneticButton 
-              href={`tel:${siteConfig.contact.phone}`} 
-              className="btn bg-pure-white text-barbershop-gold hover:bg-cream-white" 
+            <MagneticButton
+              href={`tel:${siteConfig.contact.phone}`}
+              className="btn bg-pure-white text-barbershop-gold hover:bg-cream-white"
               aria-label={`Anrufen: ${siteConfig.contact.phoneDisplay}`}
             >
               Jetzt anrufen
             </MagneticButton>
-            <MagneticButton 
-              href={siteConfig.social.whatsapp} 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className="btn bg-pure-white text-barbershop-gold hover:bg-cream-white" 
+            <MagneticButton
+              href={siteConfig.social.whatsapp}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn bg-pure-white text-barbershop-gold hover:bg-cream-white"
               aria-label="WhatsApp schreiben"
             >
               WhatsApp schreiben
@@ -563,7 +490,7 @@ export default function Home() {
       {/* Galerie Section */}
       <section className="section bg-cream-white">
         <div className="container">
-          <motion.h2 
+          <motion.h2
             className="section-title"
             variants={fadeInUp}
             initial="hidden"
@@ -572,8 +499,8 @@ export default function Home() {
           >
             Galerie
           </motion.h2>
-          
-          <motion.div 
+
+          <motion.div
             className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6"
             variants={staggerContainer}
             initial="hidden"
@@ -581,21 +508,21 @@ export default function Home() {
             viewport={{ once: true, amount: 0.2 }}
           >
             {[1, 2, 3, 4, 5, 6].map((num) => (
-              <motion.div 
+              <motion.div
                 key={num}
                 className="relative aspect-[16/9] rounded-xl overflow-hidden"
                 variants={scaleIn}
-                whileHover={{ 
+                whileHover={{
                   scale: 1.05,
                   transition: { duration: 0.3 }
                 }}
               >
-                <Image 
-                  src={`/images/gallery/gallery-${num}.jpg`} 
-                  alt={`Barbershop Galerie ${num}`} 
-                  fill 
-                  className="object-cover" 
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" 
+                <Image
+                  src={`/images/gallery/gallery-${num}.jpg`}
+                  alt={`Barbershop Galerie ${num}`}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                 />
               </motion.div>
             ))}
