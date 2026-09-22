@@ -49,8 +49,6 @@ export const teamMembers = [
     specialty: 'Klassische Herrenschnitte & Rasur',
     description: 'Ömer ist der Inhaber von Classman The Barber Club und bringt 5 Jahre Erfahrung mit.',
     image: '/images/barbers/barber-3.jpg',
-    rating: 5.0,
-    awards: ['Master Barber Certification'],
   },
   {
     id: 'yunus-emre-koekki',
@@ -60,8 +58,6 @@ export const teamMembers = [
     specialty: 'Modern Fades & Beard Design',
     description: 'Yunus ist unser erfahrener Barber mit 10 Jahren Expertise in modernen Schnitten und Bart-Styles.',
     image: '/images/barbers/barber-2.jpg',
-    rating: 4.9,
-    awards: ['Fade Master 2022'],
   },
 ] as const
 

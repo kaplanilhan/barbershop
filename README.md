@@ -1,64 +1,38 @@
-# Barbershop Website
+# Classman The Barber Club
 
-Eine moderne Website für einen Barbershop, erstellt mit Next.js und Tailwind CSS.
+Produktionsorientierte Website für **Classman The Barber Club** in Wiener Neustadt. Die Next.js-Anwendung präsentiert Services, Team, Galerie, Öffnungszeiten und Kontaktmöglichkeiten und verarbeitet Kontakt- sowie Terminanfragen per Resend.
 
-## Funktionen
+## Lokale Entwicklung
 
-- Responsive Design
-- Terminbuchungssystem
-- Serviceübersicht
-- Moderne UI/UX
-
-## Installation
-
-1. Klonen Sie das Repository:
-```bash
-git clone https://github.com/your-username/barbershop.git
-cd barbershop
-```
-
-2. Installieren Sie die Abhängigkeiten:
 ```bash
 npm install
-```
-
-3. Starten Sie den Entwicklungsserver:
-```bash
+cp .env.example .env.local
 npm run dev
 ```
 
-4. Öffnen Sie [http://localhost:3000](http://localhost:3000) in Ihrem Browser.
+Die Anwendung ist anschließend unter `http://localhost:3000` erreichbar.
 
-## Technologien
+## Konfiguration
 
-- Next.js 14
-- React 18
-- Tailwind CSS
-- TypeScript
+Für den E-Mail-Versand sind `RESEND_API_KEY`, `RESEND_DOMAIN` und `CONTACT_EMAIL` erforderlich. `NEXT_PUBLIC_GOOGLE_MAPS_API_KEY` aktiviert die interaktive Google-Karte; ohne Schlüssel wird eine eingebettete Karte verwendet. Siehe `.env.example` für alle Werte.
 
-## Projektstruktur
+## Qualitätschecks
 
-```
-barbershop/
-├── src/
-│   ├── app/
-│   │   ├── page.tsx
-│   │   ├── services/
-│   │   │   └── page.tsx
-│   │   └── termin/
-│   │       └── page.tsx
-│   ├── components/
-│   └── styles/
-├── public/
-│   └── images/
-├── package.json
-├── tailwind.config.ts
-└── tsconfig.json
+```bash
+npm run lint
+npm run typecheck
+npm run build
+# oder kombiniert
+npm run check
 ```
 
-## Entwicklung
+## Architektur
 
-- `npm run dev` - Startet den Entwicklungsserver
-- `npm run build` - Erstellt die Produktionsversion
-- `npm run start` - Startet die Produktionsversion
-- `npm run lint` - Führt Linting durch 
+- Next.js 15 App Router und React 18
+- TypeScript im Strict Mode
+- Tailwind CSS und zentrale Geschäftsdaten in `src/config/site.ts`
+- Wiederverwendbare, öffentlich durchsuchbare Inhalte in `src/content/knowledge.ts`
+- Servervalidiertes Kontaktformular (`Zod`) und Resend-E-Mail-Versand
+- Dynamische Sitemap, Robots-Regeln und strukturierte Local-Business-Daten
+
+Das frühere nicht funktionale Admin-Mockup wurde bewusst entfernt. Inhalte werden aktuell versioniert im Repository gepflegt; für ein echtes CMS sind zuerst Hosting-, Rollen- und Datenbankanforderungen festzulegen.

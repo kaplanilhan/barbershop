@@ -15,6 +15,12 @@ const rateLimitMap = new Map<string, { count: number; timestamp: number }>()
 const RATE_LIMIT_MAX_REQUESTS = 3
 const RATE_LIMIT_WINDOW = 60 * 60 * 1000 // 1 hour in milliseconds
 
+function escapeHtml(value: string) {
+  return value.replace(/[&<>'"]/g, (character) => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;',
+  })[character]!)
+}
+
 function checkRateLimit(ip: string): boolean {
   const now = Date.now()
   const userEntry = rateLimitMap.get(ip)
@@ -40,6 +46,9 @@ function checkRateLimit(ip: string): boolean {
 
 export async function POST(request: NextRequest) {
   try {
+    if (!request.headers.get('content-type')?.includes('application/json')) {
+      return NextResponse.json({ success: false, error: 'Ungültiger Inhaltstyp' }, { status: 415 })
+    }
     // Get client IP for rate limiting
     const forwarded = request.headers.get('x-forwarded-for')
     const ip = forwarded ? forwarded.split(',')[0] : request.headers.get('x-real-ip') || 'unknown'
@@ -47,9 +56,9 @@ export async function POST(request: NextRequest) {
     // Check rate limit
     if (!checkRateLimit(ip)) {
       return NextResponse.json(
-        { 
-          success: false, 
-          error: 'Zu viele Anfragen. Bitte versuchen Sie es später erneut.' 
+        {
+          success: false,
+          error: 'Zu viele Anfragen. Bitte versuchen Sie es später erneut.'
         },
         { status: 429 }
       )
@@ -70,15 +79,25 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const { name, email, phone, subject, message, service, preferredDate, preferredTime } = validationResult.data
+    const { website, ...raw } = validationResult.data
+    if (website) return NextResponse.json({ success: true, message: 'Nachricht empfangen.' })
+
+    const name = escapeHtml(raw.name)
+    const email = escapeHtml(raw.email)
+    const phone = raw.phone ? escapeHtml(raw.phone) : undefined
+    const subject = escapeHtml(raw.subject)
+    const message = escapeHtml(raw.message)
+    const service = raw.service ? escapeHtml(raw.service) : undefined
+    const preferredDate = raw.preferredDate ? escapeHtml(raw.preferredDate) : undefined
+    const preferredTime = raw.preferredTime ? escapeHtml(raw.preferredTime) : undefined
 
     // Check if Resend is configured
     if (!resend) {
       console.error('Resend is not configured. Please add RESEND_API_KEY to your environment variables.')
       return NextResponse.json(
-        { 
-          success: false, 
-          error: 'E-Mail-Service ist temporär nicht verfügbar. Bitte versuchen Sie es später erneut oder kontaktieren Sie uns telefonisch.' 
+        {
+          success: false,
+          error: 'E-Mail-Service ist temporär nicht verfügbar. Bitte versuchen Sie es später erneut oder kontaktieren Sie uns telefonisch.'
         },
         { status: 503 }
       )
@@ -90,9 +109,9 @@ export async function POST(request: NextRequest) {
       console.error('CONTACT_EMAIL is not configured')
     }
       return NextResponse.json(
-        { 
-          success: false, 
-          error: 'Empfänger-E-Mail ist nicht konfiguriert' 
+        {
+          success: false,
+          error: 'Empfänger-E-Mail ist nicht konfiguriert'
         },
         { status: 500 }
       )
@@ -110,7 +129,7 @@ export async function POST(request: NextRequest) {
             ${isAppointmentRequest ? 'Neue Terminanfrage' : 'Neue Kontaktanfrage'}
           </h2>
         </div>
-        
+
         <div style="padding: 30px; background-color: #f9f9f9;">
           <h3 style="color: #333; margin-top: 0;">Kundendaten:</h3>
           <ul style="list-style: none; padding: 0; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
@@ -150,13 +169,13 @@ export async function POST(request: NextRequest) {
           <h1 style="margin: 0;">${siteConfig.name}</h1>
           <h2 style="margin: 10px 0 0 0; font-weight: normal;">Vielen Dank für Ihre Anfrage!</h2>
         </div>
-        
+
         <div style="padding: 30px; background-color: #f9f9f9;">
           <p style="font-size: 16px; line-height: 1.6; margin-top: 0;">Liebe/r ${name},</p>
-          
+
           <p style="font-size: 16px; line-height: 1.6;">
-            vielen Dank für Ihr Interesse an ${siteConfig.name}! 
-            ${isAppointmentRequest 
+            vielen Dank für Ihr Interesse an ${siteConfig.name}!
+            ${isAppointmentRequest
               ? 'Wir haben Ihre Terminanfrage erhalten und werden uns so schnell wie möglich bei Ihnen melden, um den Termin zu bestätigen.'
               : 'Wir haben Ihre Nachricht erhalten und werden uns so schnell wie möglich bei Ihnen melden.'
             }
@@ -194,13 +213,13 @@ export async function POST(request: NextRequest) {
         to: [process.env.CONTACT_EMAIL!],
         subject: `${isAppointmentRequest ? '🗓️ Neue Terminanfrage' : '📧 Neue Kontaktanfrage'} von ${name}`,
         html: businessEmailHtml,
-        replyTo: email,
+        replyTo: raw.email,
       }),
-      
+
       // Confirmation email to customer
       resend.emails.send({
         from: `${siteConfig.name} <noreply@${process.env.RESEND_DOMAIN || 'resend.dev'}>`,
-        to: [email],
+        to: [raw.email],
         subject: `Bestätigung Ihrer ${isAppointmentRequest ? 'Terminanfrage' : 'Kontaktanfrage'} - ${siteConfig.name}`,
         html: customerEmailHtml,
       })
@@ -226,16 +245,16 @@ export async function POST(request: NextRequest) {
     if (businessEmailSuccess) {
       return NextResponse.json({
         success: true,
-        message: isAppointmentRequest 
+        message: isAppointmentRequest
           ? 'Terminanfrage erfolgreich gesendet! Wir melden uns bald bei Ihnen.'
           : 'Nachricht erfolgreich gesendet! Wir melden uns bald bei Ihnen.',
         customerEmailSent: customerEmailSuccess
       })
     } else {
       return NextResponse.json(
-        { 
-          success: false, 
-          error: 'E-Mail konnte nicht gesendet werden. Bitte versuchen Sie es später erneut.' 
+        {
+          success: false,
+          error: 'E-Mail konnte nicht gesendet werden. Bitte versuchen Sie es später erneut.'
         },
         { status: 500 }
       )
@@ -246,23 +265,11 @@ export async function POST(request: NextRequest) {
       console.error('Contact form error:', error)
     }
     return NextResponse.json(
-      { 
-        success: false, 
-        error: 'Ein unerwarteter Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.' 
+      {
+        success: false,
+        error: 'Ein unerwarteter Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.'
       },
       { status: 500 }
     )
   }
 }
-
-// Handle preflight requests for CORS
-export async function OPTIONS() {
-  return new NextResponse(null, {
-    status: 200,
-    headers: {
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': 'POST, OPTIONS',
-      'Access-Control-Allow-Headers': 'Content-Type',
-    },
-  })
-} 

@@ -1,9 +1,22 @@
 import { MetadataRoute } from 'next'
+import { siteConfig } from '@/config/site'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://classiccuts.de'
-  
+  const baseUrl = siteConfig.url
+
   return [
+    {
+      url: `${baseUrl}/gallery`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/faq`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.6,
+    },
     {
       url: baseUrl,
       lastModified: new Date(),
@@ -34,5 +47,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'yearly',
       priority: 0.3,
     },
+    {
+      url: `${baseUrl}/datenschutz`,
+      lastModified: new Date(),
+      changeFrequency: 'yearly',
+      priority: 0.3,
+    },
   ]
-} 
+}
